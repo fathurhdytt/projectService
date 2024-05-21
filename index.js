@@ -1,6 +1,7 @@
 // Import packages
 const express = require("express");
 const home = require("./routes/home");
+const map = require("./routes/router");
 const bodyParser = require('body-parser');
 const path = require('path');
 const cors = require('cors'); // Tambahkan ini
@@ -22,6 +23,10 @@ app.use(cors()); // Tambahkan ini
 
 // Routes
 app.use("/", home);
+
+// Routes
+app.use("/to", map);
+
 
 // connection
 const port = process.env.PORT || 3000;
