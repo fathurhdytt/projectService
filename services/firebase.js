@@ -2,6 +2,13 @@
 const { getDoc,getDocs,addDoc,setDoc, doc, writeBatch,collection, query, collectionGroup,where} = require('firebase/firestore');
 const { getFirestore } = require('firebase/firestore');
 const { initializeApp } = require('firebase/app');
+const admin = require('firebase-admin');
+const serviceAccount = require('../key/serviceAccountKey.json'); // path to your serviceAccountKey.json file
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: 'https://arif-9e465-default-rtdb.firebaseio.com' // Replace with your database URL
+});
 
 // Firebase configuration
 const firebaseConfig = {
@@ -56,5 +63,18 @@ const registerUser = async (email, nama, password) => {
     }
 };
 
-module.exports = {loginUser,registerUser};
+const verifyToken = async (idToken) => {
+  try {
+    const decodedToken = await admin.auth().verifyIdToken(idToken);
+    const uid = decodedToken.uid;
+    // Here you can handle the authenticated user, e.g., create a session, save to database, etc.
+    return uid;
+  } catch (error) {
+    console.error('Error verifying ID token:', error);
+    res.status(401).send({ error: 'Invalid ID token' });
+  }
+};
+
+
+module.exports = {loginUser,registerUser,verifyToken};
   
