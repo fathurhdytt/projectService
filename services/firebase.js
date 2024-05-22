@@ -1,4 +1,5 @@
 // Import statements
+require('dotenv').config();
 const { getDoc,getDocs,addDoc,setDoc, doc, writeBatch,collection, query, collectionGroup,where} = require('firebase/firestore');
 const { getFirestore } = require('firebase/firestore');
 const { initializeApp } = require('firebase/app');
