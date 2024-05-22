@@ -2,13 +2,8 @@
 const { getDoc,getDocs,addDoc,setDoc, doc, writeBatch,collection, query, collectionGroup,where} = require('firebase/firestore');
 const { getFirestore } = require('firebase/firestore');
 const { initializeApp } = require('firebase/app');
-const admin = require('firebase-admin');
-const serviceAccount = require('../key/serviceAccountKey.json'); // path to your serviceAccountKey.json file
+const admin = require('firebase-admin'); // path to your serviceAccountKey.json file
 
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: 'https://arif-9e465-default-rtdb.firebaseio.com' // Replace with your database URL
-});
 
 // Firebase configuration
 const firebaseConfig = {
