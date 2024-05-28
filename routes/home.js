@@ -3,10 +3,25 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const router = express.Router();
 const {loginUser, registerUser,verifyToken} = require('../services/firebase')
+const {sendEmail} = require('../services/mailer')
 
 router.get('/', (req, res) => {
   res.render('index');
 });
+
+
+// Route untuk mengirim email
+router.get('/send-email', async (req, res) => {
+  const { to,subject,text} = req.body;
+
+  const result = await sendEmail(to,subject,text);
+  if (result.success) {
+      res.status(200).json(result);
+  } else {
+      res.status(500).json(result);
+  }
+});
+
 
 router.post('/register',async (req, res) => {
   try {
