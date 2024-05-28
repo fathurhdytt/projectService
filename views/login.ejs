@@ -91,9 +91,9 @@
         </button>
       </form>
       <button onclick="signInWithGoogle()"
-          class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-opacity-50 my-2">
-          Sign In With Google
-        </button>
+        class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-opacity-50 my-2">
+        Sign In With Google
+      </button>
       <div class="flex items-center justify-between mb-4">
         <div class="text-sm">
           <a href="#" class="font-medium text-blue-600 hover:text-blue-500">Lupa Password?</a>
@@ -102,7 +102,7 @@
           <p>Belum Terdaftar?</p>
           <a href="#" class="font-medium text-blue-600 hover:text-blue-500">Buat Akun</a>
         </div>
-        
+
       </div>
     </div>
   </div>
@@ -191,6 +191,16 @@
     const auth = getAuth(app);
     const provider = new GoogleAuthProvider();
 
+    function setCookie(name, value, days) {
+      var expires = "";
+      if (days) {
+        var date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        expires = "; expires=" + date.toUTCString();
+      }
+      document.cookie = name + "=" + (value || "") + expires + "; path=/";
+    }
+
     // Function to handle sign in
     async function signInWithGoogle() {
       try {
@@ -213,14 +223,11 @@
         const data = await response.json();
         console.log('Server response:', data);
 
-        // Handle the authenticated user
-        document.getElementById('status').textContent = `User authenticated: ${data.uid}`;
-
         // Save UID to local storage
-        localStorage.setItem('uid', data.uid);
-
+        setCookie('uid', data.result, 7)
+        
         // Redirect to index.html
-        window.location.href = 'index.html';
+        window.location.href = '/';
       } catch (error) {
         console.error('Error during sign in:', error);
         document.getElementById('status').textContent = `Error during sign in: ${error.message}`;
