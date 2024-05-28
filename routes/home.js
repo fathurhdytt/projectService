@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const router = express.Router();
@@ -5,7 +6,7 @@ const {loginUser, registerUser,verifyToken} = require('../services/firebase')
 const {sendEmail} = require('../services/mailer')
 
 router.get('/', (req, res) => {
-  res.status(200).json("test");
+  res.render('index');
 });
 
 
