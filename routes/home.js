@@ -5,7 +5,7 @@ const {loginUser, registerUser,verifyToken} = require('../services/firebase')
 const {sendEmail} = require('../services/mailer')
 
 router.get('/', (req, res) => {
-  res.render('index');
+  res.status(200).json("test");
 });
 
 
