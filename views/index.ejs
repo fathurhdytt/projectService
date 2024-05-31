@@ -13,6 +13,11 @@
     .font-inter {
         font-family: 'Inter', sans-serif;
     }
+    .hero-section {
+        background-image: url("/img/background.png");
+        background-size: cover;
+        background-position: center;
+      }
 </style>
 </head>
 
@@ -72,11 +77,17 @@
   </header>
 
   <div class="container-main">
-    <div class="container-jumbotron-1 mt-[96px] h-[560px] bg-cover bg-center bg-[url('/img/jumbotron-homepage-1.png')]">
-        <div class="text-jumbotron">
-            <h1 class="font-[800] pt-[96px] ml-[100px] text-[60px] text-[#111928]">Menuju Kesehatan Optimal</h1>
-            <p class="text-[20px] ml-[100px] w-[800px] w-85 text-[#4B5563]">Temukan Dunia Kesehatan yang Luas: Mulai Perjalanan Kesehatan Anda dengan UPN Sehat!</p>
-        </div>
+    <!-- Hero -->
+    <div class="hero-section py-52">
+      <div class="container mx-auto p-8">
+        <h1 class="text-6xl text-gray-900 font-bold mb-4">
+          Menuju Kesehatan Optimal
+        </h1>
+        <p class="text-gray-600">
+          Temukan Dunia Kesehatan yang Luas: Mulai Perjalanan Kesehatan Anda
+          dengan UPN Sehat!
+        </p>
+      </div>
     </div>
     <div class="container-jadwal-obat flex m-[72px] gap-[80px]">
         <div class="container-form w-30 p-[28px] basis-1/3">
@@ -208,6 +219,54 @@
       </p>
     </div>
   </footer>
+
+  <script>
+    const hamburger = document.querySelector("#hamburger");
+    const navMenu = document.querySelector("#nav-menu");
+
+    hamburger.addEventListener("click", function () {
+      hamburger.classList.toggle("hamburger-active");
+      navMenu.classList.toggle("hidden");
+    });
+
+    document.getElementById('registrationForm').addEventListener('submit', async function (event) {
+      event.preventDefault();
+
+      const formData = new FormData(this);
+      const data = {
+        email: formData.get('email'),
+        password: formData.get('password')
+      };
+
+      try {
+        const response = await fetch('/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        });
+
+        if (response.ok) {
+          const result = await response.text();
+          if (result === "berhasil") {
+            alert('Registration successful!');
+            window.location.href = '/to/to-login';
+          } else {
+            alert('Registration failed: ' + result.message);
+          }
+        } else {
+          const error = await response.text();
+          alert('Registration failed: ' + error.message);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert('An error occurred. Please try again.');
+      }
+    });
+
+  </script>
+  
 </body>
 
 </html>
