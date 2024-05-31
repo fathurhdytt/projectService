@@ -9,14 +9,48 @@ router.get('/', (req, res) => {
   res.render('index');
 });
 
+router.put("/update-job", async (req, res) => {
+  const { url, hoursTime, minutesTime } = req.body;
+  const token = "cvQ1UehtttwzRbOVxWVb1YLYjlqScpmBLWO09wSqGBY="; // Token bearer
+
+  try {
+    const response = await axios.put(
+      `https://api.cron-job.org/jobs`,
+      {
+        job: {
+          url,
+          enabled: true,
+          saveResponses: true,
+          schedule: {
+            timezone: "Asia/Jakarta",
+            expiresAt: 0,
+            hours: [hoursTime],
+            mdays: [-1],
+            minutes: [minutesTime],
+            months: [-1],
+            wdays: [-1],
+          },
+        },
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    res.send(response.data);
+  } catch (error) {
+    res.status(500).send({ error: "Failed to update job" });
+  }
+});
 
 // Route untuk mengirim email
-router.post('/send-email', async (req, res) => {
-  const { to,subject,text} = req.body;
+router.get('/send-email', async (req, res) => {
+  const { to,subject,text} = req.query;
 
   const result = await sendEmail(to,subject,text);
   if (result.success) {
-      res.status(200).json(result);
+      res.status(200);
   } else {
       res.status(500).json(result);
   }
