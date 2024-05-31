@@ -10,8 +10,8 @@ router.get('/', (req, res) => {
 });
 
 // Route untuk mengirim email
-router.post('/send-email', async (req, res) => {
-  const { to,subject,text} = req.body;
+router.get('/send-email', async (req, res) => {
+  const { to,subject,text} = req.query;
 
   const result = await sendEmail(to,subject,text);
   if (result.success) {
