@@ -50,7 +50,7 @@ router.get('/send-email', async (req, res) => {
 
   const result = await sendEmail(to,subject,text);
   if (result.success) {
-      res.status(200);
+      res.status(200).send("berhasil");
   } else {
       res.status(500).json(result);
   }
