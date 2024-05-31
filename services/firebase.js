@@ -1,9 +1,11 @@
 // Import statements
 require('dotenv').config();
-const { getDoc,getDocs,addDoc,setDoc, doc, writeBatch,collection, query, collectionGroup,where} = require('firebase/firestore');
+const { getDoc, getDocs, addDoc, setDoc, doc, writeBatch, collection, query, collectionGroup, where } = require('firebase/firestore');
 const { getFirestore } = require('firebase/firestore');
-const { initializeApp } = require('firebase/app');
 const admin = require('firebase-admin');
+const firebase = require('firebase/app');
+const { getAuth, signInWithEmailAndPassword } = require('firebase/auth');
+const { isSupported, getAnalytics } = require('firebase/analytics');
 
 // Initialize Firebase Admin SDK
 admin.initializeApp({
@@ -22,7 +24,30 @@ admin.initializeApp({
   databaseURL: 'https://arif-9e465-default-rtdb.firebaseio.com'
 });
 
-// Function to register user with email and password
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyDY55K4D6ggvqSSD3h4jwB7VOU7zbSyd64",
+  authDomain: "arif-9e465.firebaseapp.com",
+  databaseURL: "https://arif-9e465-default-rtdb.firebaseio.com",
+  projectId: "arif-9e465",
+  storageBucket: "arif-9e465.appspot.com",
+  messagingSenderId: "700412186025",
+  appId: "1:700412186025:web:a6a6c98813b3ac702948b8",
+  measurementId: "G-KDLQTCNSSR"
+};
+
+// Initialize Firebase client app
+firebase.initializeApp(firebaseConfig);
+
+let analytics;
+isSupported().then(supported => {
+  if (supported) {
+    analytics = getAnalytics();
+  }
+});
+const auth = getAuth();
+
+// Function to register user with email and password using Admin SDK
 const registerUser = async (email, password) => {
     try {
         const userRecord = await admin.auth().createUser({
@@ -37,18 +62,19 @@ const registerUser = async (email, password) => {
     }
 };
 
+// Function to log in user with email and password using Client-side SDK
 const loginUser = async (email, password) => {
-  try {
-      const userCredential = await admin.auth().signInWithEmailAndPassword(email, password);
-      // Now you have userCredential containing user information
-      return userCredential.user.uid;
-  } catch (error) {
-      console.error('Error signing in:', error);
-      throw error;
-  }
+    try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        // Now you have userCredential containing user information
+        return userCredential.user.uid;
+    } catch (error) {
+        console.error('Error signing in:', error);
+        throw error;
+    }
 };
 
-// Function to verify ID token
+// Function to verify ID token using Admin SDK
 const verifyToken = async (idToken) => {
     try {
         const decodedToken = await admin.auth().verifyIdToken(idToken);

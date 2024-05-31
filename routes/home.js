@@ -25,11 +25,11 @@ router.get('/send-email', async (req, res) => {
 
 router.post('/register',async (req, res) => {
   try {
-    const { email,nama, password} = req.body;
-    const result = await registerUser(email, nama, password)
-    res.send(result);
+    const { email, password, name} = req.body;
+    const result = await registerUser(email, password)
+    res.status(200).send("berhasil");
   } catch (error) {
-    res.send(error)
+    res.status(400).send(error);
   }
 });
 
@@ -37,9 +37,9 @@ router.post('/login',async (req, res) => {
   try {
     const { email, password} = req.body;
     const result = await loginUser(email, password)
-    res.send(result);
+    res.status(200).send({message : result});
   } catch (error) {
-    res.send(error)
+    res.status(400).send(error)
   }
 });
 
