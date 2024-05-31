@@ -25,8 +25,6 @@ const sendEmail = async (to,subject,text) => {
 
         // Mengirim email
         await transporter.sendMail(mailOptions);
-
-        console.log('Email berhasil dikirim!');
         return { success: true, message: 'Email berhasil dikirim!' };
     } catch (error) {
         console.error('Gagal mengirim email:', error);
