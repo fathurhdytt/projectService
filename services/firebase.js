@@ -46,6 +46,8 @@ isSupported().then(supported => {
   }
 });
 const auth = getAuth();
+const db = getFirestore();
+
 
 // Function to register user with email and password using Admin SDK
 const registerUser = async (email, password) => {
@@ -87,4 +89,90 @@ const verifyToken = async (idToken) => {
     }
 };
 
-module.exports = { registerUser, loginUser, verifyToken };
+const cekDataToCollection = async (namaObat, email, newHoursString) => {
+    try {
+      // Define the collection name
+      const collectionName = 'cron'; // replace with your actual collection name
+  
+      // Query the collection to check if the document with the same namaObat and email exists
+      const q = query(collection(db, collectionName), where('namaObat', '==', namaObat), where('email', '==', email));
+      const querySnapshot = await getDocs(q);
+  
+      if (!querySnapshot.empty) {
+        // Document exists, check if the newHoursString already exists in any of the documents
+        for (const doc of querySnapshot.docs) {
+          const existingData = doc.data();
+          const existingHours = existingData.Hours;
+  
+          // Check if the newHoursString already exists in the array
+          const existingTimes = existingHours.map(hour => hour.time);
+          if (existingTimes.includes(newHoursString)) {
+            console.error(`Time ${newHoursString} already exists in the document.`);
+            return "error";
+          }
+        }
+  
+        // If newHoursString does not exist in any document, return "berhasil"
+        return "berhasil";
+      } else {
+        // If there are no documents with the same namaObat and email, return "berhasil"
+        return "berhasil";
+      }
+    } catch (e) {
+      console.error("Error checking document:", e.message);
+      return "error";
+    }
+  };
+  
+
+  const addDataToCollection = async (namaObat, email, newHoursString, id) => {
+    try {
+      // Define the collection name
+      const collectionName = 'cron'; // replace with your actual collection name
+  
+      // Convert the string of hours to an array
+      const newHours = [{ id: id, time: newHoursString }];
+  
+      // Query the collection to check if the document with the same namaObat and email exists
+      const q = query(collection(db, collectionName), where('namaObat', '==', namaObat), where('email', '==', email));
+      const querySnapshot = await getDocs(q);
+  
+      if (!querySnapshot.empty) {
+        // Document exists, check and update the Hours array
+        for (const doc of querySnapshot.docs) {
+          const existingData = doc.data();
+          const existingHours = existingData.Hours;
+  
+          // Check if the new hours already exist in the array
+          const existingHourIds = existingHours.map(hour => hour.id);
+          if (existingHourIds.includes(id)) {
+            console.error(`Hour with ID ${id} already exists in the document.`);
+            return "error";
+          }
+  
+          // No duplicates, update the document
+          const updatedHours = [...existingHours, ...newHours];
+          await setDoc(doc.ref, { Hours: updatedHours }, { merge: true });
+          console.log(`Document with ID ${doc.id} updated with new hours.`);
+        }
+  
+        return "berhasil";
+      } else {
+        // Document doesn't exist, create a new one
+        const docRef = await addDoc(collection(db, collectionName), {
+          namaObat: namaObat,
+          email: email,
+          Hours: newHours
+        });
+  
+        console.log("Document written with ID: ", docRef.id);
+        return "berhasil";
+      }
+    } catch (e) {
+      console.error("Error adding/updating document: ", e.message);
+      return "error";
+    }
+  };
+  
+  
+module.exports = { registerUser, loginUser, verifyToken,addDataToCollection,cekDataToCollection};
