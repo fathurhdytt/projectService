@@ -4,26 +4,31 @@ const bodyParser = require('body-parser');
 const router = express.Router();
 const {loginUser, registerUser,verifyToken} = require('../services/firebase')
 const {sendEmail} = require('../services/mailer')
+const he = require('he');
+const axios = require('axios');
 
 router.get('/', (req, res) => {
   res.render('index');
 });
 
-
-router.put("/create-job", async (req, res) => {
-  const { url, hoursTime, minutesTime, email} = req.body.job;
-  const token = "cvQ1UehtttwzRbOVxWVb1YLYjlqScpmBLWO09wSqGBY="; // Token bearer
+router.put('/create-job', async (req, res) => {
+  const { namaObat, hoursTime, minutesTime, email } = req.body;
+  const token = 'cvQ1UehtttwzRbOVxWVb1YLYjlqScpmBLWO09wSqGBY='; // Token bearer
 
   try {
+
+    // Buat URL dengan email dan namaObat yang terdecode
+    const url = `https://project-service-two.vercel.app/send-email?to=${email}&subject=${encodeURIComponent(decodedNamaObat)}`;
+
     const response = await axios.put(
-      `https://api.cron-job.org/jobs`,
+      'https://api.cron-job.org/jobs',
       {
         job: {
-          url,
+          url: url,
           enabled: true,
           saveResponses: true,
           schedule: {
-            timezone: "Asia/Jakarta",
+            timezone: 'Asia/Jakarta',
             expiresAt: 0,
             hours: [hoursTime],
             mdays: [-1],
@@ -39,9 +44,11 @@ router.put("/create-job", async (req, res) => {
         },
       }
     );
+
     res.send(response.data);
   } catch (error) {
-    res.status(500).send({ error: "Failed to update job" });
+    console.error('Error creating job:', error.response ? error.response.data : error.message);
+    res.status(500).send({ error: 'Failed to update job' });
   }
 });
 
@@ -49,8 +56,8 @@ router.put("/create-job", async (req, res) => {
 // Route untuk mengirim email
 router.get('/send-email', async (req, res) => {
   const { to,subject} = req.query;
-
-  const result = await sendEmail(to,subject,"This Is Reminder obat");
+  const subjectDecode =  he.decode(subject)
+  const result = await sendEmail(to,subjectDecode,"This Is Reminder obat");
   if (result.success) {
       res.status(200).send("berhasil");
   } else {
