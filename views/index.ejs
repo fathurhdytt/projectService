@@ -4,21 +4,23 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <title>UPN SEHAT</title>
   <style>
     @import url('"https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
     .font-inter {
-        font-family: 'Inter', sans-serif;
+      font-family: 'Inter', sans-serif;
     }
+
     .hero-section {
-        background-image: url("/img/background.png");
-        background-size: cover;
-        background-position: center;
-      }
-</style>
+      background-image: url("/img/background.png");
+      background-size: cover;
+      background-position: center;
+    }
+  </style>
 </head>
 
 <body class="bg-gray-100 w-full font-inter">
@@ -89,115 +91,43 @@
         </p>
       </div>
     </div>
-    <div class="container-jadwal-obat flex m-[72px] gap-[80px]">
-        <div class="container-form w-30 p-[28px] basis-1/3">
-            <div class="container-deskripsi">
-                <h1 class="font-bold text-[36px]">Kelola Perawatan Anda dengan Mudah: Fitur Jadwal Obat</h1>
-                <p class="text-[20px] text-[#6B7280] mt-[24px]">Jadwalkan dan Pantau Konsumsi Obat Anda dengan Lebih Efisien. Kesehatan Anda, Terjadwal dengan UPN Sehat!</p>
-            </div>
-            <form action="" class="mt-[24px]">
-                <div class="container-input flex flex-col gap-[20px]">
-                    <div>
-                        <label for="" class="block font-medium text-[14px]">Nama Obat</label>
-                        <input class="mt-[8px] h-[42px] w-full rounded-lg placeholder:p-[16px] placeholder:text-[14px]" type="text" name="" id="" placeholder="Nama Obat">
-                    </div>
-                    <div>
-                        <label for="" class="block font-medium text-[14px]">Jam (0-23)</label>
-                        <input class="mt-[8px] h-[42px] w-full rounded-lg placeholder:p-[16px] placeholder:text-[14px]" type="text" name="" id="" placeholder="Jam">
-                    </div>
-                    <div>
-                        <label for="" class="block font-medium text-[14px]">Menit (0-59)</label>
-                        <input class="mt-[8px] h-[42px] w-full rounded-lg placeholder:p-[16px] placeholder:text-[14px]" type="text" name="" id="" placeholder="Menit">
-                    </div>
-                </div>
-                <div class="container-button flex mt-[24px] gap-[16px]">
-                    <button class="text-[14px] font-medium text-[#1A56DB] basis-1/2 h-[40px] rounded-lg border-2 border-[#1A56DB]">Tambah Waktu</button>
-                    <button class="text-[14px] basis-1/2 h-[40px] bg-[#1A56DB] text-white rounded-lg">Selesai</button>
-                </div>
-            </form>
+    <div class="container-jadwal-obat flex flex-col lg:flex-row lg:gap-80 m-[72px]">
+      <div class="container-form w-full lg:w-1/3 p-[28px]">
+        <div class="container-deskripsi">
+          <h1 class="font-bold text-[36px]">Kelola Perawatan Anda dengan Mudah: Fitur Jadwal Obat</h1>
+          <p class="text-[20px] text-[#6B7280] mt-[24px]">Jadwalkan dan Pantau Konsumsi Obat Anda dengan Lebih Efisien.
+            Kesehatan Anda, Terjadwal dengan UPN Sehat!</p>
         </div>
-        <div class="container-list-obat py-[28px] basis-2/3 flex flex-col gap-[16px]">
-            <div class="container-list-1 flex justify-between bg-white p-[24px] rounded-lg">
-                <div class="container-nama-dan-jadwal-obat">
-                    <div class="container-nama flex gap-[8px] h-[32px] items-center text-[#1F2A37]">
-                        <img src="/img/logo-obat.png" alt="">
-                        <p class="font-semibold text-[20px]">Paracetamol</p>
-                    </div>
-                    <div class="container-jadwal mt-[16px]">
-                        <p class="text-[#4B5563] text-[16px]">08:00 ; 12:00 ; 19:30</p>
-                    </div>
-                </div>
-                <div class="container-delete">
-                    <button>
-                        <img src="/img/delete-obat.png" alt="">
-                    </button>
-                </div>
+        <form action="" class="mt-[24px]">
+          <div class="container-input flex flex-col gap-[20px]">
+            <div>
+              <label for="" class="block font-medium text-[14px]">Nama Obat</label>
+              <input class="mt-[8px] h-[42px] w-full rounded-lg placeholder:p-[16px] placeholder:text-[14px]"
+                type="text" name="" id="" placeholder="Nama Obat">
             </div>
-            <div class="container-list-2 flex justify-between bg-white p-[24px] rounded-lg">
-                <div class="container-nama-dan-jadwal-obat">
-                    <div class="container-nama flex gap-[8px] h-[32px] items-center text-[#1F2A37]">
-                        <img src="/img/logo-obat.png" alt="">
-                        <p class="font-semibold text-[20px]">Antibiotik</p>
-                    </div>
-                    <div class="container-jadwal mt-[16px]">
-                        <p class="text-[#4B5563] text-[16px]">08:00</p>
-                    </div>
-                </div>
-                <div class="container-delete">
-                    <button>
-                        <img src="/img/delete-obat.png" alt="">
-                    </button>
-                </div>
+            <div>
+              <label for="" class="block font-medium text-[14px]">Jam (0-23)</label>
+              <input class="mt-[8px] h-[42px] w-full rounded-lg placeholder:p-[16px] placeholder:text-[14px]"
+                type="text" name="" id="" placeholder="Jam">
             </div>
-            <div class="container-list-3 flex justify-between bg-white p-[24px] rounded-lg">
-                <div class="container-nama-dan-jadwal-obat">
-                    <div class="container-nama flex gap-[8px] h-[32px] items-center text-[#1F2A37]">
-                        <img src="/img/logo-obat.png" alt="">
-                        <p class="font-semibold text-[20px]">Cataflam</p>
-                    </div>
-                    <div class="container-jadwal mt-[16px]">
-                        <p class="text-[#4B5563] text-[16px]">08:00 ; 12:00</p>
-                    </div>
-                </div>
-                <div class="container-delete">
-                    <button>
-                        <img src="/img/delete-obat.png" alt="">
-                    </button>
-                </div>
+            <div>
+              <label for="" class="block font-medium text-[14px]">Menit (0-59)</label>
+              <input class="mt-[8px] h-[42px] w-full rounded-lg placeholder:p-[16px] placeholder:text-[14px]"
+                type="text" name="" id="" placeholder="Menit">
             </div>
-            <div class="container-list-4 flex justify-between bg-white p-[24px] rounded-lg">
-                <div class="container-nama-dan-jadwal-obat">
-                    <div class="container-nama flex gap-[8px] h-[32px] items-center text-[#1F2A37]">
-                        <img src="/img/logo-obat.png" alt="">
-                        <p class="font-semibold text-[20px]">Sangobion</p>
-                    </div>
-                    <div class="container-jadwal mt-[16px]">
-                        <p class="text-[#4B5563] text-[16px]">08:00 ; 12:00 ; 19:30</p>
-                    </div>
-                </div>
-                <div class="container-delete">
-                    <button>
-                        <img src="/img/delete-obat.png" alt="">
-                    </button>
-                </div>
-            </div>
-            <div class="container-list-5 flex justify-between bg-white p-[24px] rounded-lg">
-                <div class="container-nama-dan-jadwal-obat">
-                    <div class="container-nama flex gap-[8px] h-[32px] items-center text-[#1F2A37]">
-                        <img src="/img/logo-obat.png" alt="">
-                        <p class="font-semibold text-[20px]">Panadol</p>
-                    </div>
-                    <div class="container-jadwal mt-[16px]">
-                        <p class="text-[#4B5563] text-[16px]">08:00 ; 12:00 ; 19:30</p>
-                    </div>
-                </div>
-                <div class="container-delete">
-                    <button>
-                        <img src="/img/delete-obat.png" alt="">
-                    </button>
-                </div>
-            </div>
-        </div>
+          </div>
+          <div class="container-button flex mt-[24px] gap-[16px]">
+            <button
+              class="text-[14px] font-medium text-[#1A56DB] flex-1 h-[40px] rounded-lg border-2 border-[#1A56DB]">Tambah
+              Waktu</button>
+            <button class="text-[14px] flex-1 h-[40px] bg-[#1A56DB] text-white rounded-lg">Selesai</button>
+          </div>
+        </form>
+      </div>
+      <div class="container-list-obat py-[28px] lg:w-2/3 flex flex-col gap-[16px]">
+        <!-- Data Obat -->
+      </div>
+    </div>    
     </div>
     <div class="container-artikel-terkait"></div>
     <div class="container-video"></div>
@@ -220,6 +150,7 @@
     </div>
   </footer>
 
+  <!-- Hmaburger Logic -->
   <script>
     const hamburger = document.querySelector("#hamburger");
     const navMenu = document.querySelector("#nav-menu");
@@ -228,45 +159,144 @@
       hamburger.classList.toggle("hamburger-active");
       navMenu.classList.toggle("hidden");
     });
+  </script>
 
-    document.getElementById('registrationForm').addEventListener('submit', async function (event) {
-      event.preventDefault();
+  <!-- Jika Belum Login maka akan ke Login.ejs -->
+  <script>
+    // Fungsi untuk mendapatkan nilai cookie berdasarkan nama
+    function getCookie(name) {
+      let cookieArr = document.cookie.split(";");
 
-      const formData = new FormData(this);
-      const data = {
-        email: formData.get('email'),
-        password: formData.get('password')
-      };
+      for (let i = 0; i < cookieArr.length; i++) {
+        let cookiePair = cookieArr[i].split("=");
 
-      try {
-        const response = await fetch('/login', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(data)
-        });
-
-        if (response.ok) {
-          const result = await response.text();
-          if (result === "berhasil") {
-            alert('Registration successful!');
-            window.location.href = '/to/to-login';
-          } else {
-            alert('Registration failed: ' + result.message);
-          }
-        } else {
-          const error = await response.text();
-          alert('Registration failed: ' + error.message);
+        /* Menghapus spasi di awal nama cookie dan membandingkannya dengan string "name" */
+        if (name == cookiePair[0].trim()) {
+          // Mengembalikan nilai dari cookie
+          return decodeURIComponent(cookiePair[1]);
         }
-      } catch (error) {
-        console.error('Error:', error);
-        alert('An error occurred. Please try again.');
       }
-    });
+
+      // Mengembalikan null jika tidak ada cookie yang ditemukan
+      return null;
+    }
+
+    // Memeriksa apakah cookie "email" ada
+    let emailCookie = getCookie("uid");
+
+    if (emailCookie === null) {
+      // Mengarahkan ke halaman login jika cookie tidak ditemukan
+      window.location.href = "/to/to-login";
+    }
 
   </script>
-  
+
+  <!-- Data Obat -->
+  <script>
+    // Fungsi untuk mengambil data dari endpoint /cekCron
+    function getDataFromAPI(email) {
+      // Lakukan request AJAX ke endpoint /cekCron dengan parameter email
+      // Misalnya dengan menggunakan fetch API
+      fetch('/cekCron?email=' + email)
+        .then(response => response.json())
+        .then(data => {
+          // Panggil fungsi untuk membuat tampilan HTML dari data yang diterima
+          createHTMLFromData(data);
+        })
+        .catch(error => console.error('Error:', error));
+    }
+    // Fungsi untuk membuat tampilan HTML dari data yang diterima
+    function createHTMLFromData(data) {
+      // Container untuk menampung list obat
+      var containerListObat = document.querySelector('.container-list-obat');
+
+      // Kosongkan containerListObat sebelum menambahkan data baru
+      containerListObat.innerHTML = '';
+
+      // Fungsi untuk mengubah format waktu menjadi format yang diinginkan
+      function formatTime(time) {
+        var splitTime = time.split(':');
+        var hour = parseInt(splitTime[0]);
+        var minute = parseInt(splitTime[1]);
+        var ampm = hour >= 12 ? 'PM' : 'AM';
+        hour = hour % 12 || 12;
+        return hour + '.' + (minute < 10 ? '0' : '') + minute + ' ' + ampm;
+      }
+
+      // Iterate through each item in the response
+      data.forEach(function (item, index) {
+        // Create HTML elements
+        var containerList = document.createElement('div');
+        containerList.className = 'container-list-' + (index + 1) + ' flex justify-between bg-white p-[24px] rounded-lg';
+
+        var containerNamaDanJadwalObat = document.createElement('div');
+        containerNamaDanJadwalObat.className = 'container-nama-dan-jadwal-obat';
+
+        var containerNama = document.createElement('div');
+        containerNama.className = 'container-nama flex gap-[8px] h-[32px] items-center text-[#1F2A37]';
+
+        var img = document.createElement('img');
+        img.src = '/img/logo-obat.png';
+        img.alt = '';
+
+        var namaObat = document.createElement('p');
+        namaObat.className = 'font-semibold text-[20px]';
+        namaObat.textContent = item.namaObat;
+
+        var containerJadwal = document.createElement('div');
+        containerJadwal.className = 'container-jadwal mt-[16px]';
+
+        var jadwalText = ""; // String untuk menyimpan waktu
+
+        // Iterate through each time in the Hours array
+        item.Hours.forEach(function (hour, hourIndex) {
+          // Tambahkan tanda titik koma jika ini bukan waktu pertama
+          if (hourIndex > 0) {
+            jadwalText += " ; ";
+          }
+          jadwalText += formatTime(hour.time); // Format waktu
+        });
+
+        // Buat elemen <p> untuk menampilkan waktu
+        var jadwal = document.createElement('p');
+        jadwal.className = 'text-[#4B5563] text-[16px]';
+        jadwal.textContent = jadwalText;
+
+        // Append elemen waktu ke dalam containerJadwal
+        containerJadwal.appendChild(jadwal);
+
+        var containerDelete = document.createElement('div');
+        containerDelete.className = 'container-delete';
+
+        var button = document.createElement('button');
+
+        var imgDelete = document.createElement('img');
+        imgDelete.src = '/img/delete-obat.png';
+        imgDelete.alt = '';
+
+        // Append elements to the containerList
+        containerNama.appendChild(img);
+        containerNama.appendChild(namaObat);
+
+        containerNamaDanJadwalObat.appendChild(containerNama);
+        containerNamaDanJadwalObat.appendChild(containerJadwal);
+
+        button.appendChild(imgDelete);
+        containerDelete.appendChild(button);
+
+        containerList.appendChild(containerNamaDanJadwalObat);
+        containerList.appendChild(containerDelete);
+
+        // Append containerList to the parent element (where you want to add it)
+        containerListObat.appendChild(containerList);
+      });
+    }
+
+    // Panggil fungsi untuk mengambil data dari API
+    getDataFromAPI('arifhida1647@gmail.com'); // Ganti dengan email yang sesuai
+
+
+  </script>
 </body>
 
 </html>

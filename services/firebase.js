@@ -48,6 +48,58 @@ isSupported().then(supported => {
 const auth = getAuth();
 const db = getFirestore();
 
+const addProfileToCollection = async (uid, nama, email) => {
+  try {
+    // Referensi ke dokumen di koleksi 'profiles' dengan UID sebagai ID dokumen
+    const docRef = doc(db, 'profiles', uid);
+    
+    // Menambahkan data profil ke dokumen
+    await setDoc(docRef, {
+      nama: nama,
+      email: email
+    });
+
+    console.log('Profile successfully added:', uid);
+    return 'berhasil';
+  } catch (error) {
+    console.error('Error adding profile:', error);
+    return 'error';
+  }
+};
+
+// Function to check email by UID
+const checkEmailByUid = async (uid) => {
+  try {
+    const userRecord = await admin.auth().getUser(uid);
+    if (userRecord.email) {
+      console.log('Email:', userRecord.email);
+      return userRecord.email;
+    } else {
+      console.log('No email found for this UID.');
+      return null;
+    }
+  } catch (error) {
+    console.error('Error checking email:', error);
+    return null;
+  }
+};
+
+// Function to check email by UID
+const checkNamaByUid = async (uid) => {
+  try {
+    const userRecord = await admin.auth().getUser(uid);
+    if (userRecord.displayName) {
+      console.log('Nama:', userRecord.displayName);
+      return userRecord.displayName;
+    } else {
+      console.log('No email found for this UID.');
+      return null;
+    }
+  } catch (error) {
+    console.error('Error checking email:', error);
+    return null;
+  }
+};
 
 // Function to register user with email and password using Admin SDK
 const registerUser = async (email, password) => {
@@ -88,7 +140,27 @@ const verifyToken = async (idToken) => {
         throw error;
     }
 };
+const getCollectionCron = async (email) => {
+  try {
+    // Query untuk mengambil dokumen dari koleksi 'cron' dengan email yang sesuai
+    const q = query(collection(db, 'cron'), where('email', '==', email));
+    const querySnapshot = await getDocs(q);
 
+    // Array untuk menyimpan hasil dokumen
+    const results = [];
+    
+    // Loop melalui hasil query dan tambahkan data ke array hasil
+    querySnapshot.forEach((doc) => {
+      results.push({ id: doc.id, ...doc.data() });
+    });
+
+    console.log('Data retrieved successfully');
+    return results;
+  } catch (error) {
+    console.error('Error retrieving data:', error);
+    return [];
+  }
+};
 const cekDataToCollection = async (namaObat, email, newHoursString) => {
     try {
       // Define the collection name
@@ -175,4 +247,4 @@ const cekDataToCollection = async (namaObat, email, newHoursString) => {
   };
   
   
-module.exports = { registerUser, loginUser, verifyToken,addDataToCollection,cekDataToCollection};
+module.exports = { registerUser, loginUser, verifyToken,addDataToCollection,cekDataToCollection,getCollectionCron,addProfileToCollection,checkEmailByUid,checkNamaByUid};

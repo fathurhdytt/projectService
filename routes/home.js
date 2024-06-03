@@ -2,7 +2,8 @@ require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const router = express.Router();
-const { loginUser, registerUser, verifyToken, addDataToCollection, cekDataToCollection } = require('../services/firebase')
+const { loginUser, registerUser, verifyToken, addDataToCollection, cekDataToCollection,
+checkEmailByUid, checkNamaByUid,addProfileToCollection,getCollectionCron} = require('../services/firebase')
 const { sendEmail } = require('../services/mailer')
 const he = require('he');
 const axios = require('axios');
@@ -56,17 +57,15 @@ router.put('/create-job', async (req, res) => {
       const jobId = response.data.jobId.toString();
       const result = await addDataToCollection(namaObat, email, timeString, jobId);
       res.status(200).send(jobId);
-    }else{
+    } else {
       res.status(400).send({ error: 'Failed to create job' });
     }
-    
+
   } catch (error) {
     console.error('Error creating job:', error.response ? error.response.data : error.message);
-    res.status(500).send({ error: 'Failed to update job' });
+    res.status(400).send({ error: 'Failed to update job' });
   }
 });
-
-
 
 // Route untuk mengirim email
 router.get('/send-email', async (req, res) => {
@@ -76,10 +75,9 @@ router.get('/send-email', async (req, res) => {
   if (result.success) {
     res.status(200).send("berhasil");
   } else {
-    res.status(500).json(result);
+    res.status(400).json(result);
   }
 });
-
 
 router.post('/register', async (req, res) => {
   try {
@@ -104,13 +102,53 @@ router.post('/login', async (req, res) => {
 router.post('/verify-token', async (req, res) => {
   const idToken = req.body.idToken;
   try {
-    const result = await verifyToken(idToken)
-    res.status(200).send({ message: 'User authenticated', result });
+    const result = await verifyToken(idToken);
+    const email = await checkEmailByUid(result);
+    const nama = await checkNamaByUid(result);
+    const result2 = await addProfileToCollection(result,nama, email);
+    res.status(200).send({ message: result2 });
   } catch (error) {
     res.send(error)
   }
 });
 
+router.get('/cekEmail', async (req, res) => {
+  const uid = req.query.uid;
+  try {
+    const result = await checkEmailByUid(uid)
+    if (result != null) {
+      res.status(200).send({ message: result });
+    }
+    res.status(400);
+  } catch (error) {
+    res.status(400).send(error)
+  }
+});
 
+router.get('/cekNama', async (req, res) => {
+  const uid = req.query.uid;
+  try {
+    const result = await checkNamaByUid(uid)
+    if (result != null) {
+      res.status(200).send({ message: result });
+    }
+    res.status(400);
+  } catch (error) {
+    res.status(400).send(error)
+  }
+});
+
+router.get('/cekCron', async (req, res) => {
+  const email = req.query.email;
+  try {
+    const result = await getCollectionCron(email)
+    if (result != null) {
+      res.status(200).send(result);
+    }
+    res.status(400);
+  } catch (error) {
+    res.status(400).send(error)
+  }
+});
 module.exports = router;
 
