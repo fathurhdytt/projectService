@@ -103,14 +103,16 @@ router.post('/verify-token', async (req, res) => {
   const idToken = req.body.idToken;
   try {
     const result = await verifyToken(idToken);
-    const email = await checkEmailByUid(result);
-    const nama = await checkNamaByUid(result);
-    const result2 = await addProfileToCollection(result,nama, email);
-    res.status(200).send({ message: result2 });
+    const resultString = result.toString();
+    const email = await checkEmailByUid(resultString);
+    const nama = await checkNamaByUid(resultString); // Menggunakan resultString di sini juga jika perlu
+    const result2 = await addProfileToCollection(resultString, nama, email);
+    res.status(200).send({ result: resultString }); // Mengirimkan 'result' sebagai string
   } catch (error) {
     res.send(error)
   }
 });
+
 
 router.get('/cekEmail', async (req, res) => {
   const uid = req.query.uid;

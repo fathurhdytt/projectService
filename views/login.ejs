@@ -139,26 +139,26 @@
       const password = document.getElementById('password').value;
 
       try {
-          const response = await fetch('/login', {
-              method: 'POST',
-              headers: {
-                  'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({ email, password })
-          });
+        const response = await fetch('/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ email, password })
+        });
 
-          if (response.ok) {
-              const data = await response.json();
-              document.cookie = `uid=${data.uid}; path=/`;
-              alert('Login successful!');
-          } else {
-              const error = await response.json();
-              alert('Error: ' + error.message);
-          }
-      } catch (error) {
+        if (response.ok) {
+          const data = await response.json();
+          document.cookie = `uid=${data.uid}; path=/`;
+          alert('Login successful!');
+        } else {
+          const error = await response.json();
           alert('Error: ' + error.message);
+        }
+      } catch (error) {
+        alert('Error: ' + error.message);
       }
-  });
+    });
 
   </script>
   <script type="module">
@@ -217,8 +217,8 @@
         console.log('Server response:', data);
 
         // Save UID to local storage
-        setCookie('uid', data.result, 7)
-        
+        setCookie('uid', data.result, 7); // Menggunakan 'result' dari respons
+
         // Redirect to index.html
         window.location.href = '/';
       } catch (error) {

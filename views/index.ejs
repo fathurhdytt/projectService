@@ -127,10 +127,10 @@
       <div class="container-list-obat py-[28px] lg:w-2/3 flex flex-col gap-[16px]">
         <!-- Data Obat -->
       </div>
-    </div>    
     </div>
-    <div class="container-artikel-terkait"></div>
-    <div class="container-video"></div>
+  </div>
+  <div class="container-artikel-terkait"></div>
+  <div class="container-video"></div>
 
 
   </div>
@@ -193,7 +193,6 @@
 
   <!-- Data Obat -->
   <script>
-    // Fungsi untuk mengambil data dari endpoint /cekCron
     function getDataFromAPI(email) {
       // Lakukan request AJAX ke endpoint /cekCron dengan parameter email
       // Misalnya dengan menggunakan fetch API
@@ -205,6 +204,7 @@
         })
         .catch(error => console.error('Error:', error));
     }
+
     // Fungsi untuk membuat tampilan HTML dari data yang diterima
     function createHTMLFromData(data) {
       // Container untuk menampung list obat
@@ -292,9 +292,30 @@
       });
     }
 
-    // Panggil fungsi untuk mengambil data dari API
-    getDataFromAPI('arifhida1647@gmail.com'); // Ganti dengan email yang sesuai
+    // Mendapatkan email dari cookie dan mengambil data dari API berdasarkan email
+    function getEmailAndGetDataFromAPI() {
+      // Fungsi untuk mendapatkan email dari cookie
+      function getEmailFromCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+      }
 
+      // Mendapatkan email dari cookie
+      const email = getEmailFromCookie('uid');
+
+      // Lakukan request AJAX ke endpoint /cekEmail dengan parameter uid
+      fetch('/cekEmail?uid=' + email)
+        .then(response => response.json())
+        .then(data => {
+          // Panggil fungsi untuk mendapatkan data dari API menggunakan email yang diperoleh
+          getDataFromAPI(data.message);
+        })
+        .catch(error => console.error('Error:', error));
+    }
+
+    // Panggil fungsi untuk mendapatkan email dari cookie dan mengambil data dari API berdasarkan email
+    getEmailAndGetDataFromAPI();
 
   </script>
 </body>
