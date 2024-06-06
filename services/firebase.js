@@ -52,7 +52,7 @@ const addProfileToCollection = async (uid, nama, email) => {
   try {
     // Referensi ke dokumen di koleksi 'profiles' dengan UID sebagai ID dokumen
     const docRef = doc(db, 'profiles', uid);
-    
+
     // Menambahkan data profil ke dokumen
     await setDoc(docRef, {
       nama: nama,
@@ -103,42 +103,42 @@ const checkNamaByUid = async (uid) => {
 
 // Function to register user with email and password using Admin SDK
 const registerUser = async (email, password) => {
-    try {
-        const userRecord = await admin.auth().createUser({
-            email: email,
-            password: password
-        });
-        console.log('Successfully created new user:', userRecord.uid);
-        return userRecord.uid;
-    } catch (error) {
-        console.error('Error creating new user:', error);
-        throw error;
-    }
+  try {
+    const userRecord = await admin.auth().createUser({
+      email: email,
+      password: password
+    });
+    console.log('Successfully created new user:', userRecord.uid);
+    return userRecord.uid;
+  } catch (error) {
+    console.error('Error creating new user:', error);
+    throw error;
+  }
 };
 
 // Function to log in user with email and password using Client-side SDK
 const loginUser = async (email, password) => {
-    try {
-        const userCredential = await signInWithEmailAndPassword(auth, email, password);
-        // Now you have userCredential containing user information
-        return userCredential.user.uid;
-    } catch (error) {
-        console.error('Error signing in:', error);
-        throw error;
-    }
+  try {
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    // Now you have userCredential containing user information
+    return userCredential.user.uid;
+  } catch (error) {
+    console.error('Error signing in:', error);
+    throw error;
+  }
 };
 
 // Function to verify ID token using Admin SDK
 const verifyToken = async (idToken) => {
-    try {
-        const decodedToken = await admin.auth().verifyIdToken(idToken);
-        const uid = decodedToken.uid;
-        // Here you can handle the authenticated user, e.g., create a session, save to database, etc.
-        return uid;
-    } catch (error) {
-        console.error('Error verifying ID token:', error);
-        throw error;
-    }
+  try {
+    const decodedToken = await admin.auth().verifyIdToken(idToken);
+    const uid = decodedToken.uid;
+    // Here you can handle the authenticated user, e.g., create a session, save to database, etc.
+    return uid;
+  } catch (error) {
+    console.error('Error verifying ID token:', error);
+    throw error;
+  }
 };
 const getCollectionCron = async (email) => {
   try {
@@ -148,7 +148,7 @@ const getCollectionCron = async (email) => {
 
     // Array untuk menyimpan hasil dokumen
     const results = [];
-    
+
     // Loop melalui hasil query dan tambahkan data ke array hasil
     querySnapshot.forEach((doc) => {
       results.push({ id: doc.id, ...doc.data() });
@@ -162,89 +162,149 @@ const getCollectionCron = async (email) => {
   }
 };
 const cekDataToCollection = async (namaObat, email, newHoursString) => {
-    try {
-      // Define the collection name
-      const collectionName = 'cron'; // replace with your actual collection name
-  
-      // Query the collection to check if the document with the same namaObat and email exists
-      const q = query(collection(db, collectionName), where('namaObat', '==', namaObat), where('email', '==', email));
-      const querySnapshot = await getDocs(q);
-  
-      if (!querySnapshot.empty) {
-        // Document exists, check if the newHoursString already exists in any of the documents
-        for (const doc of querySnapshot.docs) {
-          const existingData = doc.data();
-          const existingHours = existingData.Hours;
-  
-          // Check if the newHoursString already exists in the array
-          const existingTimes = existingHours.map(hour => hour.time);
-          if (existingTimes.includes(newHoursString)) {
-            console.error(`Time ${newHoursString} already exists in the document.`);
-            return "error";
-          }
-        }
-  
-        // If newHoursString does not exist in any document, return "berhasil"
-        return "berhasil";
-      } else {
-        // If there are no documents with the same namaObat and email, return "berhasil"
-        return "berhasil";
-      }
-    } catch (e) {
-      console.error("Error checking document:", e.message);
-      return "error";
-    }
-  };
-  
+  try {
+    // Define the collection name
+    const collectionName = 'cron'; // replace with your actual collection name
 
-  const addDataToCollection = async (namaObat, email, newHoursString, id) => {
-    try {
-      // Define the collection name
-      const collectionName = 'cron'; // replace with your actual collection name
-  
-      // Convert the string of hours to an array
-      const newHours = [{ id: id, time: newHoursString }];
-  
-      // Query the collection to check if the document with the same namaObat and email exists
-      const q = query(collection(db, collectionName), where('namaObat', '==', namaObat), where('email', '==', email));
-      const querySnapshot = await getDocs(q);
-  
-      if (!querySnapshot.empty) {
-        // Document exists, check and update the Hours array
-        for (const doc of querySnapshot.docs) {
-          const existingData = doc.data();
-          const existingHours = existingData.Hours;
-  
-          // Check if the new hours already exist in the array
-          const existingHourIds = existingHours.map(hour => hour.id);
-          if (existingHourIds.includes(id)) {
-            console.error(`Hour with ID ${id} already exists in the document.`);
-            return "error";
-          }
-  
-          // No duplicates, update the document
-          const updatedHours = [...existingHours, ...newHours];
-          await setDoc(doc.ref, { Hours: updatedHours }, { merge: true });
-          console.log(`Document with ID ${doc.id} updated with new hours.`);
+    // Query the collection to check if the document with the same namaObat and email exists
+    const q = query(collection(db, collectionName), where('namaObat', '==', namaObat), where('email', '==', email));
+    const querySnapshot = await getDocs(q);
+
+    if (!querySnapshot.empty) {
+      // Document exists, check if the newHoursString already exists in any of the documents
+      for (const doc of querySnapshot.docs) {
+        const existingData = doc.data();
+        const existingHours = existingData.Hours;
+
+        // Check if the newHoursString already exists in the array
+        const existingTimes = existingHours.map(hour => hour.time);
+        if (existingTimes.includes(newHoursString)) {
+          console.error(`Time ${newHoursString} already exists in the document.`);
+          return "error";
         }
-  
-        return "berhasil";
-      } else {
-        // Document doesn't exist, create a new one
-        const docRef = await addDoc(collection(db, collectionName), {
-          namaObat: namaObat,
-          email: email,
-          Hours: newHours
-        });
-  
-        console.log("Document written with ID: ", docRef.id);
-        return "berhasil";
       }
-    } catch (e) {
-      console.error("Error adding/updating document: ", e.message);
-      return "error";
+
+      // If newHoursString does not exist in any document, return "berhasil"
+      return "berhasil";
+    } else {
+      // If there are no documents with the same namaObat and email, return "berhasil"
+      return "berhasil";
     }
-  };
-  
-  
-module.exports = { registerUser, loginUser, verifyToken,addDataToCollection,cekDataToCollection,getCollectionCron,addProfileToCollection,checkEmailByUid,checkNamaByUid};
+  } catch (e) {
+    console.error("Error checking document:", e.message);
+    return "error";
+  }
+};
+
+
+const addDataToCollection = async (namaObat, email, newHoursString, id) => {
+  try {
+    // Define the collection name
+    const collectionName = 'cron'; // replace with your actual collection name
+
+    // Convert the string of hours to an array
+    const newHours = [{ id: id, time: newHoursString }];
+
+    // Query the collection to check if the document with the same namaObat and email exists
+    const q = query(collection(db, collectionName), where('namaObat', '==', namaObat), where('email', '==', email));
+    const querySnapshot = await getDocs(q);
+
+    if (!querySnapshot.empty) {
+      // Document exists, check and update the Hours array
+      for (const doc of querySnapshot.docs) {
+        const existingData = doc.data();
+        const existingHours = existingData.Hours;
+
+        // Check if the new hours already exist in the array
+        const existingHourIds = existingHours.map(hour => hour.id);
+        if (existingHourIds.includes(id)) {
+          console.error(`Hour with ID ${id} already exists in the document.`);
+          return "error";
+        }
+
+        // No duplicates, update the document
+        const updatedHours = [...existingHours, ...newHours];
+        await setDoc(doc.ref, { Hours: updatedHours }, { merge: true });
+        console.log(`Document with ID ${doc.id} updated with new hours.`);
+      }
+
+      return "berhasil";
+    } else {
+      // Document doesn't exist, create a new one
+      const docRef = await addDoc(collection(db, collectionName), {
+        namaObat: namaObat,
+        email: email,
+        Hours: newHours
+      });
+
+      console.log("Document written with ID: ", docRef.id);
+      return "berhasil";
+    }
+  } catch (e) {
+    console.error("Error adding/updating document: ", e.message);
+    return "error";
+  }
+};
+
+const deleteJobs = async (namaObat, email) => {
+  if (!namaObat || !email) {
+    throw new Error('namaObat and email are required');
+  }
+
+  try {
+    // Query the Firebase collection to find the documents with the specified namaObat and email
+    const cronCollection = collection(db, 'cron');
+    const cronQuery = query(cronCollection, where('namaObat', '==', namaObat), where('email', '==', email));
+    const snapshot = await getDocs(cronQuery);
+
+    if (snapshot.empty) {
+      throw new Error('No jobs found with the specified namaObat and email');
+    }
+
+    // Extract the job IDs and document IDs
+    const jobsToDelete = [];
+    snapshot.forEach(doc => {
+      const data = doc.data();
+      if (data.Hours) {
+        data.Hours.forEach(hour => {
+          jobsToDelete.push({ jobId: hour.id, docId: doc.id });
+        });
+      }
+    });
+
+    // Delete each job from the external API
+    const authToken = 'cvQ1UehtttwzRbOVxWVb1YLYjlqScpmBLWO09wSqGBY=';
+    for (const { jobId } of jobsToDelete) {
+      const url = `https://api.cron-job.org/jobs/${jobId}`;
+      const response = await fetch(url, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${authToken}`
+        }
+      });
+
+      if (!response.ok) {
+        const errorResponse = await response.json();
+        throw new Error(errorResponse.message || 'Error deleting job');
+      }
+    }
+
+    // Optionally, delete the documents from Firebase
+    const batch = writeBatch(db);
+    jobsToDelete.forEach(({ docId }) => {
+      const docRef = doc(cronCollection, docId);
+      batch.delete(docRef);
+    });
+    await batch.commit();
+
+    console.log('Sukses menghapus pekerjaan');
+    return "berhasil";
+  } catch (error) {
+    console.error('Error deleting jobs:', error);
+    throw error;
+  }
+}
+
+
+module.exports = {deleteJobs, registerUser, loginUser, verifyToken, addDataToCollection, cekDataToCollection, getCollectionCron, addProfileToCollection, checkEmailByUid, checkNamaByUid };

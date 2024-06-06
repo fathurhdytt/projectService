@@ -20,6 +20,27 @@
       background-size: cover;
       background-position: center;
     }
+
+    .spinner {
+      border-top-color: transparent;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      border: 4px solid;
+      border-color: white;
+      border-top-color: transparent;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
   </style>
 </head>
 
@@ -98,30 +119,32 @@
           <p class="text-[20px] text-[#6B7280] mt-[24px]">Jadwalkan dan Pantau Konsumsi Obat Anda dengan Lebih Efisien.
             Kesehatan Anda, Terjadwal dengan UPN Sehat!</p>
         </div>
-        <form action="" class="mt-[24px]">
+        <form action="" class="mt-[24px]" id="medicineForm">
           <div class="container-input flex flex-col gap-[20px]">
             <div>
-              <label for="" class="block font-medium text-[14px]">Nama Obat</label>
+              <label for="namaObat" class="block font-medium text-[14px]">Nama Obat</label>
               <input class="mt-[8px] h-[42px] w-full rounded-lg placeholder:p-[16px] placeholder:text-[14px]"
-                type="text" name="" id="" placeholder="Nama Obat">
+                type="text" id="namaObat" placeholder="Nama Obat">
             </div>
             <div>
-              <label for="" class="block font-medium text-[14px]">Jam (0-23)</label>
+              <label for="jam" class="block font-medium text-[14px]">Jam (0-23)</label>
               <input class="mt-[8px] h-[42px] w-full rounded-lg placeholder:p-[16px] placeholder:text-[14px]"
-                type="text" name="" id="" placeholder="Jam">
+                type="text" id="jam" placeholder="Jam">
             </div>
             <div>
-              <label for="" class="block font-medium text-[14px]">Menit (0-59)</label>
+              <label for="menit" class="block font-medium text-[14px]">Menit (0-59)</label>
               <input class="mt-[8px] h-[42px] w-full rounded-lg placeholder:p-[16px] placeholder:text-[14px]"
-                type="text" name="" id="" placeholder="Menit">
+                type="text" id="menit" placeholder="Menit">
             </div>
           </div>
           <div class="container-button flex mt-[24px] gap-[16px]">
-            <button
+            <button type="button" id="tambahWaktu"
               class="text-[14px] font-medium text-[#1A56DB] flex-1 h-[40px] rounded-lg border-2 border-[#1A56DB]">Tambah
               Waktu</button>
-            <button class="text-[14px] flex-1 h-[40px] bg-[#1A56DB] text-white rounded-lg">Selesai</button>
+            <button type="submit"
+              class="text-[14px] flex-1 h-[40px] bg-[#1A56DB] text-white rounded-lg">Selesai</button>
           </div>
+          <div id="resultMessage" class="mt-[16px] text-[14px]"></div>
         </form>
       </div>
       <div class="container-list-obat py-[28px] lg:w-2/3 flex flex-col gap-[16px]">
@@ -193,6 +216,8 @@
 
   <!-- Data Obat -->
   <script>
+    let email; // Declare email variable in the global scope
+
     function getDataFromAPI(email) {
       // Lakukan request AJAX ke endpoint /cekCron dengan parameter email
       // Misalnya dengan menggunakan fetch API
@@ -268,11 +293,33 @@
         var containerDelete = document.createElement('div');
         containerDelete.className = 'container-delete';
 
-        var button = document.createElement('button');
-
+        // Create delete button as image
         var imgDelete = document.createElement('img');
         imgDelete.src = '/img/delete-obat.png';
-        imgDelete.alt = '';
+        imgDelete.alt = 'Delete';
+        imgDelete.style.cursor = 'pointer'; // Add cursor style to make it look clickable
+
+        // Attach click event to delete button (image)
+        imgDelete.addEventListener('click', function () {
+          // Build URL with parameters
+          var url = '/delete-job?namaObat=' + encodeURIComponent(item.namaObat) + '&email=' + encodeURIComponent(email);
+          // Send GET request
+          fetch(url)
+            .then(response => {
+              if (!response.ok) {
+                throw new Error('Failed to delete job');
+              }
+              // If successful, reload the data
+              getEmailAndGetDataFromAPI();
+            })
+            .catch(error => console.error('Error:', error));
+        });
+
+        // Append delete button (image) to containerDelete
+        containerDelete.appendChild(imgDelete);
+
+        // Append containerList to the parent element (where you want to add it)
+        containerListObat.appendChild(containerList);
 
         // Append elements to the containerList
         containerNama.appendChild(img);
@@ -281,8 +328,7 @@
         containerNamaDanJadwalObat.appendChild(containerNama);
         containerNamaDanJadwalObat.appendChild(containerJadwal);
 
-        button.appendChild(imgDelete);
-        containerDelete.appendChild(button);
+        containerDelete.appendChild(imgDelete);
 
         containerList.appendChild(containerNamaDanJadwalObat);
         containerList.appendChild(containerDelete);
@@ -292,7 +338,7 @@
       });
     }
 
-    // Mendapatkan email dari cookie dan mengambil data dari API berdasarkan email
+    // Panggil fungsi untuk mendapatkan email dari cookie dan mengambil data dari API berdasarkan email
     function getEmailAndGetDataFromAPI() {
       // Fungsi untuk mendapatkan email dari cookie
       function getEmailFromCookie(name) {
@@ -302,7 +348,7 @@
       }
 
       // Mendapatkan email dari cookie
-      const email = getEmailFromCookie('uid');
+      email = getEmailFromCookie('uid'); // Assign the email to the global variable
 
       // Lakukan request AJAX ke endpoint /cekEmail dengan parameter uid
       fetch('/cekEmail?uid=' + email)
@@ -310,6 +356,7 @@
         .then(data => {
           // Panggil fungsi untuk mendapatkan data dari API menggunakan email yang diperoleh
           getDataFromAPI(data.message);
+          email = data.message;
         })
         .catch(error => console.error('Error:', error));
     }
@@ -317,6 +364,81 @@
     // Panggil fungsi untuk mendapatkan email dari cookie dan mengambil data dari API berdasarkan email
     getEmailAndGetDataFromAPI();
 
+  </script>
+
+  <!-- Create Jadwal -->
+  <script>
+    // Mendapatkan email dari cookie
+    email = getEmailFromCookie('uid'); // Assign the email to the global variable
+    function getEmailFromCookie(name) {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+    // Lakukan request AJAX ke endpoint /cekEmail dengan parameter uid
+    fetch('/cekEmail?uid=' + email)
+      .then(response => response.json())
+      .then(data => {
+        // Panggil fungsi untuk mendapatkan data dari API menggunakan email yang diperoleh
+        getDataFromAPI(data.message);
+        email = data.message;
+      })
+      .catch(error => console.error('Error:', error));
+
+
+
+    document.getElementById('tambahWaktu').addEventListener('click', function () {
+      const button = document.getElementById('tambahWaktu');
+      const originalText = button.innerHTML;
+      button.innerHTML = '<div class="spinner border-white border-t-transparent border-4 w-5 h-5 rounded-full animate-spin"></div>';
+      button.disabled = true;
+
+      const resultMessage = document.getElementById('resultMessage');
+      resultMessage.innerHTML = '';
+
+      const namaObat = document.getElementById('namaObat').value;
+      const jam = document.getElementById('jam').value;
+      const menit = document.getElementById('menit').value;
+
+      const data = {
+        namaObat: namaObat,
+        hoursTime: jam,
+        minutesTime: menit,
+        email: email
+      };
+
+      fetch('/create-job', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+        .then(response => {
+          if (response.status === 400) {
+            throw new Error('Sudah ada waktunya');
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log('Success:', data);
+          button.innerHTML = originalText;
+          button.disabled = false;
+          resultMessage.innerHTML = '<span class="text-green-500">Berhasil ditambahkan</span>';
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+          button.innerHTML = originalText;
+          button.disabled = false;
+          resultMessage.innerHTML = `<span class="text-red-500">${error.message}</span>`;
+        });
+    });
+
+    document.getElementById('medicineForm').addEventListener('submit', function (event) {
+      event.preventDefault();
+      // Add any additional form submission logic here
+      console.log('Form submitted');
+    });
   </script>
 </body>
 

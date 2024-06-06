@@ -3,7 +3,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const router = express.Router();
 const { loginUser, registerUser, verifyToken, addDataToCollection, cekDataToCollection,
-checkEmailByUid, checkNamaByUid,addProfileToCollection,getCollectionCron} = require('../services/firebase')
+checkEmailByUid, checkNamaByUid,addProfileToCollection,getCollectionCron, deleteJobs} = require('../services/firebase')
 const { sendEmail } = require('../services/mailer')
 const he = require('he');
 const axios = require('axios');
@@ -152,5 +152,19 @@ router.get('/cekCron', async (req, res) => {
     res.status(400).send(error)
   }
 });
+
+router.get('/delete-job', async (req, res) => {
+  const namaObat = req.query.namaObat;
+  const email = req.query.email;
+  try {
+    const result = await deleteJobs(namaObat,email);
+    if (result == "berhasil") {
+      res.status(200).send("berhasil");
+    }
+    res.status(400);
+  } catch (error) {
+    res.status(400).send(error)
+  }
+})
 module.exports = router;
 
