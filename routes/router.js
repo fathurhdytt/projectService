@@ -12,6 +12,9 @@ map.get('/to-signup', (req, res) => {
     res.render('signup');
   });
 
+map.get('/to-aboutus', (req, res) => {
+  res.render('aboutus');
+});
 
 
 module.exports = map;
