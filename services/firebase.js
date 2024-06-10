@@ -4,7 +4,7 @@ const { getDoc, getDocs, addDoc, setDoc, doc, writeBatch, collection, query, col
 const { getFirestore } = require('firebase/firestore');
 const admin = require('firebase-admin');
 const firebase = require('firebase/app');
-const { getAuth, signInWithEmailAndPassword } = require('firebase/auth');
+const { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail} = require('firebase/auth');
 const { isSupported, getAnalytics } = require('firebase/analytics');
 
 // Initialize Firebase Admin SDK
@@ -306,5 +306,28 @@ const deleteJobs = async (namaObat, email) => {
   }
 }
 
+// Function to send password reset email
+const sendPasswordReset = async (email) => {
+  try {
+    await sendPasswordResetEmail(auth, email);
+    console.log('Password reset email sent successfully');
+    return 'berhasil';
+  } catch (error) {
+    console.error('Error sending password reset email:', error);
+    return 'error';
+  }
+};
 
-module.exports = {deleteJobs, registerUser, loginUser, verifyToken, addDataToCollection, cekDataToCollection, getCollectionCron, addProfileToCollection, checkEmailByUid, checkNamaByUid };
+module.exports = {
+  deleteJobs,
+  registerUser,
+  loginUser,
+  verifyToken,
+  addDataToCollection,
+  cekDataToCollection,
+  getCollectionCron,
+  addProfileToCollection,
+  checkEmailByUid,
+  checkNamaByUid,
+  sendPasswordReset
+};

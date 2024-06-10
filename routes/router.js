@@ -16,6 +16,10 @@ map.get('/to-aboutus', (req, res) => {
   res.render('aboutus');
 });
 
+map.get('/to-forgetPassword', (req, res) => {
+  res.render('forgetPassword');
+});
+
 
 module.exports = map;
 
