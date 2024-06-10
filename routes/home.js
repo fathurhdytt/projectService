@@ -82,8 +82,9 @@ router.get('/send-email', async (req, res) => {
 router.post('/register', async (req, res) => {
   try {
     const { email, password, name } = req.body;
-    const result = await registerUser(email, password)
-    res.status(200).send("berhasil");
+    const result = await registerUser(email, password)// Menggunakan resultString di sini juga jika perlu
+    const result2 = await addProfileToCollection(result, name, email);
+    res.status(200).send({ message: result });
   } catch (error) {
     res.status(400).send(error);
   }
@@ -92,8 +93,8 @@ router.post('/register', async (req, res) => {
 router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
-    const result = await loginUser(email, password)
-    res.status(200).send({ message: result });
+    const uid = await loginUser(email, password)
+    res.status(200).send({ message: uid });
   } catch (error) {
     res.status(400).send(error)
   }

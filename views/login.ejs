@@ -100,7 +100,7 @@
         </div>
         <div class="text-sm flex space-x-2">
           <p>Belum Terdaftar?</p>
-          <a href="#" class="font-medium text-blue-600 hover:text-blue-500">Buat Akun</a>
+          <a href="/to/to-signup" class="font-medium text-blue-600 hover:text-blue-500">Buat Akun</a>
         </div>
 
       </div>
@@ -149,8 +149,9 @@
 
         if (response.ok) {
           const data = await response.json();
-          document.cookie = `uid=${data.uid}; path=/`;
+          document.cookie = `uid=${data.message}; path=/`;
           alert('Login successful!');
+          window.location.href = '/';
         } else {
           const error = await response.json();
           alert('Error: ' + error.message);
@@ -159,8 +160,9 @@
         alert('Error: ' + error.message);
       }
     });
-
   </script>
+
+  <!-- login with google -->
   <script type="module">
     // Import the functions you need from the SDKs you need
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-app.js";
