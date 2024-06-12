@@ -3,7 +3,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const router = express.Router();
 const { loginUser, registerUser, verifyToken, addDataToCollection, cekDataToCollection,
-checkEmailByUid, checkNamaByUid,addProfileToCollection,getCollectionCron, deleteJobs,sendPasswordReset} = require('../services/firebase')
+checkEmailByUid, checkNamaByUid,addProfileToCollection,getCollectionCron, deleteJobs,
+deleteJobsDetail,sendPasswordReset} = require('../services/firebase')
 const { sendEmail } = require('../services/mailer')
 const he = require('he');
 const axios = require('axios');
@@ -189,13 +190,14 @@ router.get('/delete-detail-job', async (req, res) => {
   const jam = req.query.jam;
   const menit = req.query.menit;
   try {
-    const result = await deleteJobsDetail(email,namaObat,jam,menit);
-    if (result == "berhasil") {
+    const result = await deleteJobsDetail(namaObat, email, jam, menit);
+    if (result === "berhasil") {
       res.status(200).send("berhasil");
+    } else {
+      res.status(400).send(result); // Mengirim pesan error jika tidak berhasil
     }
-    res.status(400);
   } catch (error) {
-    res.status(400).send(error)
+    res.status(400).send(error.message); // Mengirim pesan error jika terjadi kesalahan
   }
 });
 module.exports = router;

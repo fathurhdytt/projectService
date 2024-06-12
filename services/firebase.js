@@ -305,7 +305,78 @@ const deleteJobs = async (namaObat, email) => {
     throw error;
   }
 }
+const deleteJobsDetail = async (namaObat, email, jam, menit) => {
+  if (!namaObat || !email || jam == null || menit == null) {
+    throw new Error('namaObat, email, jam, and menit are required');
+  }
 
+  // Format jam dan menit menjadi format waktu "HH:mm"
+  const formattedTime = `${String(jam).padStart(2, '0')}:${String(menit).padStart(2, '0')}`;
+
+  try {
+    // Query the Firebase collection to find the documents with the specified namaObat and email
+    const cronCollection = collection(db, 'cron');
+    const cronQuery = query(
+      cronCollection,
+      where('namaObat', '==', namaObat),
+      where('email', '==', email)
+    );
+    const snapshot = await getDocs(cronQuery);
+
+    if (snapshot.empty) {
+      throw new Error('No jobs found with the specified namaObat and email');
+    }
+
+    // Extract the job IDs and document IDs
+    const jobsToDelete = [];
+    snapshot.forEach(doc => {
+      const data = doc.data();
+      if (data.Hours) {
+        data.Hours.forEach(hour => {
+          if (hour.time === formattedTime) {
+            jobsToDelete.push({ jobId: hour.id, docId: doc.id });
+          }
+        });
+      }
+    });
+
+    if (jobsToDelete.length === 0) {
+      throw new Error('No jobs found matching the specified time');
+    }
+
+    // Delete each job from the external API
+    const authToken = 'cvQ1UehtttwzRbOVxWVb1YLYjlqScpmBLWO09wSqGBY=';
+    for (const { jobId } of jobsToDelete) {
+      const url = `https://api.cron-job.org/jobs/${jobId}`;
+      const response = await fetch(url, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${authToken}`
+        }
+      });
+
+      if (!response.ok) {
+        const errorResponse = await response.json();
+        throw new Error(errorResponse.message || 'Error deleting job');
+      }
+    }
+
+    // Optionally, delete the documents from Firebase
+    const batch = writeBatch(db);
+    jobsToDelete.forEach(({ docId }) => {
+      const docRef = doc(cronCollection, docId);
+      batch.delete(docRef);
+    });
+    await batch.commit();
+
+    console.log('Sukses menghapus pekerjaan');
+    return "berhasil";
+  } catch (error) {
+    console.error('Error deleting jobs:', error);
+    throw error;
+  }
+};
 const sendPasswordReset = async (email) => {
   try {
     // Cek apakah email ada di koleksi Firestore
@@ -345,5 +416,6 @@ module.exports = {
   addProfileToCollection,
   checkEmailByUid,
   checkNamaByUid,
-  sendPasswordReset
+  sendPasswordReset,
+  deleteJobsDetail
 };
