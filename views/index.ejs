@@ -1,552 +1,438 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap"
-      rel="stylesheet"
-    />
-    <script src="https://cdn.tailwindcss.com"></script>
-    <title>UPN SEHAT</title>
-    <style>
-      @import url('"https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
-      .font-inter {
-        font-family: "Inter", sans-serif;
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <title>UPN SEHAT</title>
+  <style>
+    @import url('"https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+    .font-inter {
+      font-family: "Inter", sans-serif;
+    }
+
+    .hero-section {
+      background-image: url("/img/background.png");
+      background-size: cover;
+      background-position: center;
+    }
+
+    .spinner {
+      border-top-color: transparent;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      border: 4px solid;
+      border-color: white;
+      border-top-color: transparent;
+      animation: spin 1s linear infinite;
+    }
+
+    .swiper-container {
+      position: relative;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
       }
 
-      .hero-section {
-        background-image: url("/img/background.png");
-        background-size: cover;
-        background-position: center;
+      100% {
+        transform: rotate(360deg);
       }
+    }
+  </style>
+  <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+</head>
 
-      .spinner {
-        border-top-color: transparent;
-        border-radius: 50%;
-        width: 20px;
-        height: 20px;
-        border: 4px solid;
-        border-color: white;
-        border-top-color: transparent;
-        animation: spin 1s linear infinite;
-      }
-
-      .swiper-container {
-        position: relative;
-      }
-
-      @keyframes spin {
-        0% {
-          transform: rotate(0deg);
-        }
-
-        100% {
-          transform: rotate(360deg);
-        }
-      }
-    </style>
-    <link
-      rel="stylesheet"
-      href="https://unpkg.com/swiper/swiper-bundle.min.css"
-    />
-  </head>
-
-  <body class="bg-gray-100 w-full font-inter">
-    <!-- NAVBAR -->
-    <header
-      class="bg-white fixed top-0 left-0 w-full flex items-center z-50 border-b-2 border-gray-100"
-    >
-      <div class="container mx-auto">
-        <div class="flex items-center justify-between relative">
-          <div class="px-4">
-            <a href="#home">
-              <img src="/img/logo.png" alt="upn-sehat" class="block py-8" />
-            </a>
-          </div>
-
-          <!-- Hamburger -->
-          <div class="flex items-center px-4">
-            <button
-              id="hamburger"
-              name="hamburger"
-              type="button"
-              class="block absolute right-4 lg:hidden"
-            >
-              <span class="w-[30px] h-[2px] my-2 block bg-gray-900"></span>
-              <span class="w-[30px] h-[2px] my-2 block bg-gray-900"></span>
-              <span class="w-[30px] h-[2px] my-2 block bg-gray-900"></span>
-            </button>
-          </div>
-
-          <!-- List -->
-          <nav
-            id="nav-menu"
-            class="hidden absolute py-2 bg-white shadow-lg rounded-lg max-w-[250px] w-full right-4 top-full lg:block lg:static lg:bg-transparent lg:max-w-full lg:shadow-none lg:rounded-none"
-          >
-            <ul class="block lg:flex">
-              <li class="group content-center">
-                <a
-                  href="/"
-                  class="text-gray-900 mx-6 py-2 flex group-hover:text-blue-600"
-                  >Beranda</a
-                >
-              </li>
-              <li class="group content-center">
-                <a
-                  href="#form-obat"
-                  class="text-gray-900 mx-6 py-2 flex group-hover:text-blue-600"
-                  >Jadwal Obat</a
-                >
-              </li>
-              <li class="group content-center">
-                <a
-                  href="#artikel"
-                  class="text-gray-900 mx-6 py-2 flex group-hover:text-blue-600"
-                  >Artikel</a
-                >
-              </li>
-              <li class="group content-center">
-                <a
-                  href="#video"
-                  class="text-gray-900 mx-6 py-2 flex group-hover:text-blue-600"
-                  >Video</a
-                >
-              </li>
-              <li class="group content-center">
-                <a
-                  href="/to/to-aboutus"
-                  class="text-gray-900 mx-6 py-2 flex group-hover:text-blue-600"
-                  >About Us</a
-                >
-              </li>
-              <li
-                class="group lg:ml-auto mx-6 space-x-2 py-2 flex content-center"
-              >
-                <button
-                  onclick="window.location.href='/to/to-login'"
-                  class="text-gray-800 px-4 py-2 rounded-md hover:bg-gray-400 focus:outline-none focus:ring focus:ring-gray-400 focus:ring-opacity-50 border-2 border-gray-200 w-full"
-                >
-                  Masuk
-                </button>
-                <button
-                  onclick="window.location.href='/to/to-signup'"
-                  class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring focus:ring-blue-600 focus:ring-opacity-50 w-full"
-                >
-                  Daftar
-                </button>
-              </li>
-            </ul>
-          </nav>
+<body class="bg-gray-100 w-full font-inter">
+  <!-- NAVBAR -->
+  <header class="bg-white fixed top-0 left-0 w-full flex items-center z-50 border-b-2 border-gray-100">
+    <div class="container mx-auto">
+      <div class="flex items-center justify-between relative">
+        <div class="px-4">
+          <a href="#home">
+            <img src="/img/logo.png" alt="upn-sehat" class="block py-8" />
+          </a>
         </div>
-      </div>
-    </header>
 
-    <!-- Hero -->
-    <div class="hero-section py-52">
-      <div class="container mx-auto p-6">
-        <h1 class="text-6xl text-gray-900 font-bold mb-4">
-          Menuju Kesehatan Optimal
-        </h1>
-        <p class="text-gray-600">
-          Temukan Dunia Kesehatan yang Luas: Mulai Perjalanan Kesehatan Anda
-          dengan UPN Sehat!
-        </p>
+        <!-- Hamburger -->
+        <div class="flex items-center px-4">
+          <button id="hamburger" name="hamburger" type="button" class="block absolute right-4 lg:hidden">
+            <span class="w-[30px] h-[2px] my-2 block bg-gray-900"></span>
+            <span class="w-[30px] h-[2px] my-2 block bg-gray-900"></span>
+            <span class="w-[30px] h-[2px] my-2 block bg-gray-900"></span>
+          </button>
+        </div>
+
+        <!-- List -->
+        <nav id="nav-menu"
+          class="hidden absolute py-2 bg-white shadow-lg rounded-lg max-w-[250px] w-full right-4 top-full lg:block lg:static lg:bg-transparent lg:max-w-full lg:shadow-none lg:rounded-none">
+          <ul class="block lg:flex">
+            <li class="group content-center">
+              <a href="/" class="text-gray-900 mx-6 py-2 flex group-hover:text-blue-600">Beranda</a>
+            </li>
+            <li class="group content-center">
+              <a href="#form-obat" class="text-gray-900 mx-6 py-2 flex group-hover:text-blue-600">Jadwal Obat</a>
+            </li>
+            <li class="group content-center">
+              <a href="#artikel" class="text-gray-900 mx-6 py-2 flex group-hover:text-blue-600">Artikel</a>
+            </li>
+            <li class="group content-center">
+              <a href="#video" class="text-gray-900 mx-6 py-2 flex group-hover:text-blue-600">Video</a>
+            </li>
+            <li class="group content-center">
+              <a href="/to/to-aboutus" class="text-gray-900 mx-6 py-2 flex group-hover:text-blue-600">About Us</a>
+            </li>
+            <li class="group lg:ml-auto mx-6 space-x-2 py-2 flex content-center">
+              <button id="logoutButton"
+                class="text-gray-800 px-4 py-2 rounded-md hover:bg-gray-400 focus:outline-none focus:ring focus:ring-gray-400 focus:ring-opacity-50 border-2 border-gray-200 w-full">
+                LogOut
+              </button>
+              <button onclick="window.location.href='/to/to-signup'"
+                class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring focus:ring-blue-600 focus:ring-opacity-50 w-full">
+                Profile
+              </button>
+            </li>
+          </ul>
+        </nav>
       </div>
     </div>
+  </header>
 
-    <!-- SECTION JADWAL OBAT -->
-    <section
-      id="form-obat"
-      class="container-jadwal-obat container flex flex-col lg:flex-row mx-auto py-20"
-    >
-      <!-- FORM OBAT -->
-      <div class="container-form w-full lg:w-1/2 p-6 bg-white rounded-xl mb-6">
-        <div class="container-deskripsi">
-          <h1 class="text-3xl text-gray-900 font-bold mb-4">
+  <!-- Hero -->
+  <div class="hero-section py-52">
+    <div class="container mx-auto p-6">
+      <h1 class="text-6xl text-gray-900 font-bold mb-4">
+        Menuju Kesehatan Optimal
+      </h1>
+      <p class="text-gray-600">
+        Temukan Dunia Kesehatan yang Luas: Mulai Perjalanan Kesehatan Anda
+        dengan UPN Sehat!
+      </p>
+    </div>
+  </div>
+
+  <!-- SECTION JADWAL OBAT -->
+  <section id="form-obat" class="container-jadwal-obat container flex flex-col lg:flex-row mx-auto py-20">
+    <!-- FORM OBAT -->
+    <div class="container-form w-full lg:w-1/2 p-6 bg-white rounded-xl mb-6">
+      <div class="container-deskripsi">
+        <h1 class="text-3xl text-gray-900 font-bold mb-4">
+          Kelola Perawatan Anda dengan Mudah: Fitur Jadwal Obat
+        </h1>
+        <p class="text-gray-400 mt-6">
+          Jadwalkan dan Pantau Konsumsi Obat Anda dengan Lebih Efisien.
+          Kesehatan Anda, Terjadwal dengan UPN Sehat!
+        </p>
+      </div>
+      <form action="" class="mt-6" id="medicineForm">
+        <div class="container-input flex flex-col gap-6">
+          <div>
+            <label for="namaObat" class="block font-medium">Nama Obat</label>
+            <input
+              class="mt-2 block w-full py-2 px-3 rounded-md outline-1 border-x border-2 border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-600 focus:ring-opacity-50 focus:outline-none"
+              type="text" id="namaObat" placeholder="Nama Obat" />
+          </div>
+          <div>
+            <label for="jam" class="block font-medium">Jam (0-23)</label>
+            <input
+              class="mt-2 block w-full py-2 px-3 rounded-md outline-1 border-2 border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-600 focus:ring-opacity-50 focus:outline-none"
+              type="text" id="jam" placeholder="Jam" />
+          </div>
+          <div>
+            <label for="menit" class="block font-medium">Menit (0-59)</label>
+            <input
+              class="mt-2 block w-full py-2 px-3 rounded-md outline-1 border-2 border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-600 focus:ring-opacity-50 focus:outline-none"
+              type="text" id="menit" placeholder="Menit" />
+          </div>
+        </div>
+        <div class="container-button flex mt-6 gap-4">
+          <button type="button" id="tambahWaktu" class="flex-1 bg-blue-600 h-10 text-white rounded-lg">
+            Tambah Waktu
+          </button>
+          <button type="submit" class="flex-1 bg-red-600 h-10 text-white rounded-lg" id="submitButton">
+            <span id="buttonText">Delete</span>
+            <span id="spinner" class="hidden ml-2 border-t-2 border-b-2 border-white rounded-full w-5 h-5"></span>
+          </button>
+        </div>
+        <div id="resultMessage" class="mt-4"></div>
+      </form>
+    </div>
+
+    <!-- CARD LIST OBAT -->
+    <div class="container-list-obat flex-col px-6 w-full space-y-6">
+      <!-- CARD HERE -->
+    </div>
+  </section>
+
+  <!-- CTA Button -->
+  <div class="jadwal obat py-28 bg-white flex">
+    <div class="container mx-auto p-6">
+      <div class="flex flex-col md:flex-row items-center md:space-x-6">
+        <!-- Left Column -->
+        <div class="flex-1">
+          <h1 class="text-6xl text-gray-900 font-bold mb-4">
             Kelola Perawatan Anda dengan Mudah: Fitur Jadwal Obat
           </h1>
-          <p class="text-gray-400 mt-6">
+          <p class="text-gray-600">
             Jadwalkan dan Pantau Konsumsi Obat Anda dengan Lebih Efisien.
             Kesehatan Anda, Terjadwal dengan UPN Sehat!
           </p>
+          <a href="#form-obat">
+            <button class="bg-blue-500 text-white my-8 py-2 px-4 rounded hover:bg-blue-700">
+              Tambahkan Jadwal Obat
+            </button>
+          </a>
         </div>
-        <form action="" class="mt-6" id="medicineForm">
-          <div class="container-input flex flex-col gap-6">
-            <div>
-              <label for="namaObat" class="block font-medium">Nama Obat</label>
-              <input
-                class="mt-2 block w-full py-2 px-3 rounded-md outline-1 border-x border-2 border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-600 focus:ring-opacity-50 focus:outline-none"
-                type="text"
-                id="namaObat"
-                placeholder="Nama Obat"
-              />
-            </div>
-            <div>
-              <label for="jam" class="block font-medium"
-                >Jam (0-23)</label
-              >
-              <input
-                class="mt-2 block w-full py-2 px-3 rounded-md outline-1 border-2 border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-600 focus:ring-opacity-50 focus:outline-none"
-                type="text"
-                id="jam"
-                placeholder="Jam"
-              />
-            </div>
-            <div>
-              <label for="menit" class="block font-medium"
-                >Menit (0-59)</label
-              >
-              <input
-                class="mt-2 block w-full py-2 px-3 rounded-md outline-1 border-2 border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-600 focus:ring-opacity-50 focus:outline-none"
-                type="text"
-                id="menit"
-                placeholder="Menit"
-              />
-            </div>
-          </div>
-          <div class="container-button flex mt-6 gap-4">
-            <button
-              type="button"
-              id="tambahWaktu"
-              class="flex-1 bg-blue-600 h-10 text-white rounded-lg">
-              Tambah Waktu
-            </button>
-            <button
-              type="submit"
-              class="flex-1 bg-red-600 h-10 text-white rounded-lg"
-            >
-              Delete
-            </button>
-          </div>
-          <div id="resultMessage" class="mt-4"></div>
-        </form>
-      </div>
-
-      <!-- CARD LIST OBAT -->
-      <div class="container-list-obat flex-col px-6 w-full space-y-6">
-        <!-- CARD HERE -->
-      </div>
-    </section>
-
-    <!-- CTA Button -->
-    <div class="jadwal obat py-28 bg-white flex">
-      <div class="container mx-auto p-6">
-        <div class="flex flex-col md:flex-row items-center md:space-x-6">
-          <!-- Left Column -->
-          <div class="flex-1">
-            <h1 class="text-6xl text-gray-900 font-bold mb-4">
-              Kelola Perawatan Anda dengan Mudah: Fitur Jadwal Obat
-            </h1>
-            <p class="text-gray-600">
-              Jadwalkan dan Pantau Konsumsi Obat Anda dengan Lebih Efisien.
-              Kesehatan Anda, Terjadwal dengan UPN Sehat!
-            </p>
-            <a href="#form-obat">
-              <button
-                class="bg-blue-500 text-white my-8 py-2 px-4 rounded hover:bg-blue-700"
-              >
-                Tambahkan Jadwal Obat
-              </button>
-            </a>
-          </div>
-          <!-- Right Column -->
-          <div class="flex-1 my-4 md:mt-0 flex justify-end">
-            <img
-              src="img/logo-cta.png"
-              alt="Deskripsi Gambar"
-              class="w-72 h-72 object-cover rounded"
-            />
-          </div>
+        <!-- Right Column -->
+        <div class="flex-1 my-4 md:mt-0 flex justify-end">
+          <img src="img/logo-cta.png" alt="Deskripsi Gambar" class="w-72 h-72 object-cover rounded" />
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- NEWS SECTION -->
-    <section id="news-section" class="news my-20 relative">
-      <div class="container mx-auto px-8">
-        <div class="card-news">
-          <div class="head-section flex">
-            <h2 class="text-2xl font-bold mr-auto">Berita Terbaru</h2>
-          </div>
-        </div>
-
-        <!-- Swiper Navigation Buttons -->
-        <div class="head-section">
-          <div id="visible-cards" class="swiper-container my-4 overflow-hidden">
-            <div class="swiper-wrapper">
-              <!-- Repeat more slides as needed -->
-            </div>
-            <div class="swiper-pagination"></div>
-
-            <!-- Add Navigation -->
-
-            <button
-              class="swiper-button-next text-white p-8 rounded-full bg-black bg-opacity-30"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="1.5"
-                stroke="currentColor"
-                class="w-2 h-2"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M9 5l7 7-7 7"
-                />
-              </svg>
-            </button>
-            <button
-              class="swiper-button-prev text-white p-8 rounded-full bg-black bg-opacity-30"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="1.5"
-                stroke="currentColor"
-                class="w-2 h-2"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M15 19l-7-7 7-7"
-                />
-              </svg>
-            </button>
-          </div>
+  <!-- NEWS SECTION -->
+  <section id="news-section" class="news my-20 relative">
+    <div class="container mx-auto px-8">
+      <div class="card-news">
+        <div class="head-section flex">
+          <h2 class="text-2xl font-bold mr-auto">Berita Terbaru</h2>
         </div>
       </div>
-    </section>
 
-    <footer class="bg-white text-white p-4">
-      <div class="container mx-auto flex items-center justify-between">
-        <!-- Logo -->
-        <div class="logo flex space-x-3">
-          <img src="/img/upnsehat-kecil.png" alt="Logo" class="h-8" />
-          <img src="/img/upn-kecil.png" alt="Logo" class="h-8" />
+      <!-- Swiper Navigation Buttons -->
+      <div class="head-section">
+        <div id="visible-cards" class="swiper-container my-4 overflow-hidden">
+          <div class="swiper-wrapper">
+            <!-- Repeat more slides as needed -->
+          </div>
+          <div class="swiper-pagination"></div>
+
+          <!-- Add Navigation -->
+
+          <button class="swiper-button-next text-white p-8 rounded-full bg-black bg-opacity-30">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+              stroke="currentColor" class="w-2 h-2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+          <button class="swiper-button-prev text-white p-8 rounded-full bg-black bg-opacity-30">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+              stroke="currentColor" class="w-2 h-2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
         </div>
-        <!-- Hak Cipta -->
-        <p class="text-sm text-gray-900">
-          &copy; 2024, Studi Informatika, Fakultas Ilmu Komputer. Hak Cipta
-          Dilindungi
-        </p>
       </div>
-    </footer>
+    </div>
+  </section>
 
-    <!-- Hmaburger Logic -->
-    <script>
-      const hamburger = document.querySelector("#hamburger");
-      const navMenu = document.querySelector("#nav-menu");
+  <footer class="bg-white text-white p-4">
+    <div class="container mx-auto flex items-center justify-between">
+      <!-- Logo -->
+      <div class="logo flex space-x-3">
+        <img src="/img/upnsehat-kecil.png" alt="Logo" class="h-8" />
+        <img src="/img/upn-kecil.png" alt="Logo" class="h-8" />
+      </div>
+      <!-- Hak Cipta -->
+      <p class="text-sm text-gray-900">
+        &copy; 2024, Studi Informatika, Fakultas Ilmu Komputer. Hak Cipta
+        Dilindungi
+      </p>
+    </div>
+  </footer>
 
-      hamburger.addEventListener("click", function () {
-        hamburger.classList.toggle("hamburger-active");
-        navMenu.classList.toggle("hidden");
-      });
-    </script>
+  <!-- Hmaburger Logic -->
+  <script>
+    const hamburger = document.querySelector("#hamburger");
+    const navMenu = document.querySelector("#nav-menu");
 
-    <!-- Jika Belum Login maka akan ke Login.ejs -->
-    <script>
-      // Fungsi untuk mendapatkan nilai cookie berdasarkan nama
-      function getCookie(name) {
-        let cookieArr = document.cookie.split(";");
+    hamburger.addEventListener("click", function () {
+      hamburger.classList.toggle("hamburger-active");
+      navMenu.classList.toggle("hidden");
+    });
+  </script>
 
-        for (let i = 0; i < cookieArr.length; i++) {
-          let cookiePair = cookieArr[i].split("=");
+  <!-- Jika Belum Login maka akan ke Login.ejs -->
+  <script>
+    // Fungsi untuk mendapatkan nilai cookie berdasarkan nama
+    function getCookie(name) {
+      let cookieArr = document.cookie.split(";");
 
-          /* Menghapus spasi di awal nama cookie dan membandingkannya dengan string "name" */
-          if (name == cookiePair[0].trim()) {
-            // Mengembalikan nilai dari cookie
-            return decodeURIComponent(cookiePair[1]);
+      for (let i = 0; i < cookieArr.length; i++) {
+        let cookiePair = cookieArr[i].split("=");
+
+        /* Menghapus spasi di awal nama cookie dan membandingkannya dengan string "name" */
+        if (name == cookiePair[0].trim()) {
+          // Mengembalikan nilai dari cookie
+          return decodeURIComponent(cookiePair[1]);
+        }
+      }
+
+      // Mengembalikan null jika tidak ada cookie yang ditemukan
+      return null;
+    }
+
+    // Memeriksa apakah cookie "email" ada
+    let emailCookie = getCookie("uid");
+
+    if (emailCookie === null) {
+      // Mengarahkan ke halaman login jika cookie tidak ditemukan
+      window.location.href = "/to/to-login";
+    }
+  </script>
+
+  <!-- Data Obat -->
+  <script>
+    let email; // Declare email variable in the global scope
+
+    function getDataFromAPI(email) {
+      // Lakukan request AJAX ke endpoint /cekCron dengan parameter email
+      // Misalnya dengan menggunakan fetch API
+      fetch("/cekCron?email=" + email)
+        .then((response) => response.json())
+        .then((data) => {
+          // Panggil fungsi untuk membuat tampilan HTML dari data yang diterima
+          createHTMLFromData(data);
+        })
+        .catch((error) => console.error("Error:", error));
+    }
+
+    // Fungsi untuk membuat tampilan HTML dari data yang diterima
+    function createHTMLFromData(data) {
+      // Container untuk menampung list obat
+      var containerListObat = document.querySelector(".container-list-obat");
+
+      // Kosongkan containerListObat sebelum menambahkan data baru
+      containerListObat.innerHTML = "";
+
+      // Fungsi untuk mengubah format waktu menjadi format yang diinginkan
+      function formatTime(time) {
+        var splitTime = time.split(":");
+        var hour = parseInt(splitTime[0]);
+        var minute = parseInt(splitTime[1]);
+        var ampm = hour >= 12 ? "PM" : "AM";
+        hour = hour % 12 || 12;
+        return hour + "." + (minute < 10 ? "0" : "") + minute + " " + ampm;
+      }
+
+      // Iterate through each item in the response
+      data.forEach(function (item, index) {
+        // Create HTML elements
+        var containerList = document.createElement("div");
+        containerList.className =
+          "container-list-" +
+          (index + 1) +
+          " flex justify-between bg-white p-6 rounded-lg";
+
+        var containerNamaDanJadwalObat = document.createElement("div");
+        containerNamaDanJadwalObat.className =
+          "container-nama-dan-jadwal-obat";
+
+        var containerNama = document.createElement("div");
+        containerNama.className =
+          "container-nama flex gap-4 h-8 items-center text-gray-600";
+
+        var img = document.createElement("img");
+        img.src = "/img/logo-obat.png";
+        img.alt = "";
+
+        var namaObat = document.createElement("p");
+        namaObat.className = "font-semibold text-xl";
+        namaObat.textContent = item.namaObat;
+
+        var containerJadwal = document.createElement("div");
+        containerJadwal.className = "container-jadwal mt-4";
+
+        var jadwalText = ""; // String untuk menyimpan waktu
+
+        // Iterate through each time in the Hours array
+        item.Hours.forEach(function (hour, hourIndex) {
+          // Tambahkan tanda titik koma jika ini bukan waktu pertama
+          if (hourIndex > 0) {
+            jadwalText += " ; ";
           }
-        }
-
-        // Mengembalikan null jika tidak ada cookie yang ditemukan
-        return null;
-      }
-
-      // Memeriksa apakah cookie "email" ada
-      let emailCookie = getCookie("uid");
-
-      if (emailCookie === null) {
-        // Mengarahkan ke halaman login jika cookie tidak ditemukan
-        window.location.href = "/to/to-login";
-      }
-    </script>
-
-    <!-- Data Obat -->
-    <script>
-      let email; // Declare email variable in the global scope
-
-      function getDataFromAPI(email) {
-        // Lakukan request AJAX ke endpoint /cekCron dengan parameter email
-        // Misalnya dengan menggunakan fetch API
-        fetch("/cekCron?email=" + email)
-          .then((response) => response.json())
-          .then((data) => {
-            // Panggil fungsi untuk membuat tampilan HTML dari data yang diterima
-            createHTMLFromData(data);
-          })
-          .catch((error) => console.error("Error:", error));
-      }
-
-      // Fungsi untuk membuat tampilan HTML dari data yang diterima
-      function createHTMLFromData(data) {
-        // Container untuk menampung list obat
-        var containerListObat = document.querySelector(".container-list-obat");
-
-        // Kosongkan containerListObat sebelum menambahkan data baru
-        containerListObat.innerHTML = "";
-
-        // Fungsi untuk mengubah format waktu menjadi format yang diinginkan
-        function formatTime(time) {
-          var splitTime = time.split(":");
-          var hour = parseInt(splitTime[0]);
-          var minute = parseInt(splitTime[1]);
-          var ampm = hour >= 12 ? "PM" : "AM";
-          hour = hour % 12 || 12;
-          return hour + "." + (minute < 10 ? "0" : "") + minute + " " + ampm;
-        }
-
-        // Iterate through each item in the response
-        data.forEach(function (item, index) {
-          // Create HTML elements
-          var containerList = document.createElement("div");
-          containerList.className =
-            "container-list-" +
-            (index + 1) +
-            " flex justify-between bg-white p-6 rounded-lg";
-
-          var containerNamaDanJadwalObat = document.createElement("div");
-          containerNamaDanJadwalObat.className =
-            "container-nama-dan-jadwal-obat";
-
-          var containerNama = document.createElement("div");
-          containerNama.className =
-            "container-nama flex gap-4 h-8 items-center text-gray-600";
-
-          var img = document.createElement("img");
-          img.src = "/img/logo-obat.png";
-          img.alt = "";
-
-          var namaObat = document.createElement("p");
-          namaObat.className = "font-semibold text-xl";
-          namaObat.textContent = item.namaObat;
-
-          var containerJadwal = document.createElement("div");
-          containerJadwal.className = "container-jadwal mt-4";
-
-          var jadwalText = ""; // String untuk menyimpan waktu
-
-          // Iterate through each time in the Hours array
-          item.Hours.forEach(function (hour, hourIndex) {
-            // Tambahkan tanda titik koma jika ini bukan waktu pertama
-            if (hourIndex > 0) {
-              jadwalText += " ; ";
-            }
-            jadwalText += formatTime(hour.time); // Format waktu
-          });
-
-          // Buat elemen <p> untuk menampilkan waktu
-          var jadwal = document.createElement("p");
-          jadwal.className = "text-gray-600 text-[16px]";
-          jadwal.textContent = jadwalText;
-
-          // Append elemen waktu ke dalam containerJadwal
-          containerJadwal.appendChild(jadwal);
-
-          var containerDelete = document.createElement("div");
-          containerDelete.className = "container-delete";
-
-          // Create delete button as image
-          var imgDelete = document.createElement("img");
-          imgDelete.src = "/img/delete-obat.png";
-          imgDelete.alt = "Delete";
-          imgDelete.style.cursor = "pointer"; // Add cursor style to make it look clickable
-
-          // Attach click event to delete button (image)
-          imgDelete.addEventListener("click", function () {
-            // Build URL with parameters
-            var url =
-              "/delete-job?namaObat=" +
-              encodeURIComponent(item.namaObat) +
-              "&email=" +
-              encodeURIComponent(email);
-            // Send GET request
-            fetch(url)
-              .then((response) => {
-                if (!response.ok) {
-                  throw new Error("Failed to delete job");
-                }
-                // If successful, reload the data
-                getEmailAndGetDataFromAPI();
-              })
-              .catch((error) => console.error("Error:", error));
-          });
-
-          // Append delete button (image) to containerDelete
-          containerDelete.appendChild(imgDelete);
-
-          // Append containerList to the parent element (where you want to add it)
-          containerListObat.appendChild(containerList);
-
-          // Append elements to the containerList
-          containerNama.appendChild(img);
-          containerNama.appendChild(namaObat);
-
-          containerNamaDanJadwalObat.appendChild(containerNama);
-          containerNamaDanJadwalObat.appendChild(containerJadwal);
-
-          containerDelete.appendChild(imgDelete);
-
-          containerList.appendChild(containerNamaDanJadwalObat);
-          containerList.appendChild(containerDelete);
-
-          // Append containerList to the parent element (where you want to add it)
-          containerListObat.appendChild(containerList);
+          jadwalText += formatTime(hour.time); // Format waktu
         });
-      }
 
-      // Panggil fungsi untuk mendapatkan email dari cookie dan mengambil data dari API berdasarkan email
-      function getEmailAndGetDataFromAPI() {
-        // Fungsi untuk mendapatkan email dari cookie
-        function getEmailFromCookie(name) {
-          const value = `; ${document.cookie}`;
-          const parts = value.split(`; ${name}=`);
-          if (parts.length === 2) return parts.pop().split(";").shift();
-        }
+        // Buat elemen <p> untuk menampilkan waktu
+        var jadwal = document.createElement("p");
+        jadwal.className = "text-gray-600 text-[16px]";
+        jadwal.textContent = jadwalText;
 
-        // Mendapatkan email dari cookie
-        email = getEmailFromCookie("uid"); // Assign the email to the global variable
+        // Append elemen waktu ke dalam containerJadwal
+        containerJadwal.appendChild(jadwal);
 
-        // Lakukan request AJAX ke endpoint /cekEmail dengan parameter uid
-        fetch("/cekEmail?uid=" + email)
-          .then((response) => response.json())
-          .then((data) => {
-            // Panggil fungsi untuk mendapatkan data dari API menggunakan email yang diperoleh
-            getDataFromAPI(data.message);
-            email = data.message;
-          })
-          .catch((error) => console.error("Error:", error));
-      }
+        var containerDelete = document.createElement("div");
+        containerDelete.className = "container-delete";
 
-      // Panggil fungsi untuk mendapatkan email dari cookie dan mengambil data dari API berdasarkan email
-      getEmailAndGetDataFromAPI();
-    </script>
+        // Create delete button as image
+        var imgDelete = document.createElement("img");
+        imgDelete.src = "/img/delete-obat.png";
+        imgDelete.alt = "Delete";
+        imgDelete.style.cursor = "pointer"; // Add cursor style to make it look clickable
 
-    <!-- Create Jadwal -->
-    <script>
-      // Mendapatkan email dari cookie
-      email = getEmailFromCookie("uid"); // Assign the email to the global variable
+        // Attach click event to delete button (image)
+        imgDelete.addEventListener("click", function () {
+          // Build URL with parameters
+          var url =
+            "/delete-job?namaObat=" +
+            encodeURIComponent(item.namaObat) +
+            "&email=" +
+            encodeURIComponent(email);
+          // Send GET request
+          fetch(url)
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error("Failed to delete job");
+              }
+              // If successful, reload the data
+              getEmailAndGetDataFromAPI();
+            })
+            .catch((error) => console.error("Error:", error));
+        });
+
+        // Append delete button (image) to containerDelete
+        containerDelete.appendChild(imgDelete);
+
+        // Append containerList to the parent element (where you want to add it)
+        containerListObat.appendChild(containerList);
+
+        // Append elements to the containerList
+        containerNama.appendChild(img);
+        containerNama.appendChild(namaObat);
+
+        containerNamaDanJadwalObat.appendChild(containerNama);
+        containerNamaDanJadwalObat.appendChild(containerJadwal);
+
+        containerDelete.appendChild(imgDelete);
+
+        containerList.appendChild(containerNamaDanJadwalObat);
+        containerList.appendChild(containerDelete);
+
+        // Append containerList to the parent element (where you want to add it)
+        containerListObat.appendChild(containerList);
+      });
+    }
+
+    // Panggil fungsi untuk mendapatkan email dari cookie dan mengambil data dari API berdasarkan email
+    function getEmailAndGetDataFromAPI() {
+      // Fungsi untuk mendapatkan email dari cookie
       function getEmailFromCookie(name) {
         const value = `; ${document.cookie}`;
         const parts = value.split(`; ${name}=`);
         if (parts.length === 2) return parts.pop().split(";").shift();
       }
+
+      // Mendapatkan email dari cookie
+      email = getEmailFromCookie("uid"); // Assign the email to the global variable
+
       // Lakukan request AJAX ke endpoint /cekEmail dengan parameter uid
       fetch("/cekEmail?uid=" + email)
         .then((response) => response.json())
@@ -556,150 +442,247 @@
           email = data.message;
         })
         .catch((error) => console.error("Error:", error));
+    }
 
-      document
-        .getElementById("tambahWaktu")
-        .addEventListener("click", function () {
-          const button = document.getElementById("tambahWaktu");
-          const originalText = button.innerHTML;
-          button.innerHTML =
-            '<div class="spinner border-white border-t-transparent border-4 w-5 h-5 rounded-full animate-spin"></div>';
-          button.disabled = true;
+    // Panggil fungsi untuk mendapatkan email dari cookie dan mengambil data dari API berdasarkan email
+    getEmailAndGetDataFromAPI();
+  </script>
 
-          const resultMessage = document.getElementById("resultMessage");
-          resultMessage.innerHTML = "";
+  <!-- Create Jadwal -->
+  <script>
+    // Mendapatkan email dari cookie
+    email = getEmailFromCookie("uid"); // Assign the email to the global variable
+    function getEmailFromCookie(name) {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) return parts.pop().split(";").shift();
+    }
+    // Lakukan request AJAX ke endpoint /cekEmail dengan parameter uid
+    fetch("/cekEmail?uid=" + email)
+      .then((response) => response.json())
+      .then((data) => {
+        // Panggil fungsi untuk mendapatkan data dari API menggunakan email yang diperoleh
+        getDataFromAPI(data.message);
+        email = data.message;
+      })
+      .catch((error) => console.error("Error:", error));
 
-          const namaObat = document.getElementById("namaObat").value;
-          const jam = parseInt(document.getElementById("jam").value);
-          const menit = parseInt(document.getElementById("menit").value);
+    document
+      .getElementById("tambahWaktu")
+      .addEventListener("click", function () {
+        const button = document.getElementById("tambahWaktu");
+        const originalText = button.innerHTML;
+        button.innerHTML =
+          '<div class="spinner border-white border-t-transparent border-4 w-5 h-5 rounded-full animate-spin"></div>';
+        button.disabled = true;
 
-          if (isNaN(jam) || jam < 0 || jam > 23) {
-            resultMessage.innerHTML =
-              '<span class="text-red-500">Jam harus antara 0 dan 23</span>';
-            button.innerHTML = originalText;
-            button.disabled = false;
-            return;
-          }
+        const resultMessage = document.getElementById("resultMessage");
+        resultMessage.innerHTML = "";
 
-          if (isNaN(menit) || menit < 0 || menit > 59) {
-            resultMessage.innerHTML =
-              '<span class="text-red-500">Menit harus antara 0 dan 59</span>';
-            button.innerHTML = originalText;
-            button.disabled = false;
-            return;
-          }
+        const namaObat = document.getElementById("namaObat").value;
+        const jam = parseInt(document.getElementById("jam").value);
+        const menit = parseInt(document.getElementById("menit").value);
 
-          const data = {
-            namaObat: namaObat,
-            hoursTime: jam,
-            minutesTime: menit,
-            email: email,
-          };
+        if (isNaN(jam) || jam < 0 || jam > 23) {
+          resultMessage.innerHTML =
+            '<span class="text-red-500">Jam harus antara 0 dan 23</span>';
+          button.innerHTML = originalText;
+          button.disabled = false;
+          return;
+        }
 
-          fetch("/create-job", {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
+        if (isNaN(menit) || menit < 0 || menit > 59) {
+          resultMessage.innerHTML =
+            '<span class="text-red-500">Menit harus antara 0 dan 59</span>';
+          button.innerHTML = originalText;
+          button.disabled = false;
+          return;
+        }
+
+        const data = {
+          namaObat: namaObat,
+          hoursTime: jam,
+          minutesTime: menit,
+          email: email,
+        };
+
+        fetch("/create-job", {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        })
+          .then((response) => {
+            if (response.status === 400) {
+              throw new Error("Sudah ada waktunya");
+            }
+            return response.json();
           })
-            .then((response) => {
-              if (response.status === 400) {
-                throw new Error("Sudah ada waktunya");
-              }
-              return response.json();
-            })
-            .then((data) => {
-              console.log("Success:", data);
-              button.innerHTML = originalText;
-              button.disabled = false;
-              resultMessage.innerHTML =
-                '<span class="text-green-500">Berhasil ditambahkan</span>';
-            })
-            .catch((error) => {
-              console.error("Error:", error);
-              button.innerHTML = originalText;
-              button.disabled = false;
-              resultMessage.innerHTML = `<span class="text-red-500">${error.message}</span>`;
-            });
-        });
-
-      document
-        .getElementById("medicineForm")
-        .addEventListener("submit", function (event) {
-          event.preventDefault();
-          // Add any additional form submission logic here
-          console.log("Form submitted");
-        });
-    </script>
-
-    <!-- Artikel -->
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        const apiKey = "4f4be2944983451b8d00be76dcc5e62b";
-        const apiUrl = `https://newsapi.org/v2/everything?apiKey=${apiKey}&q=health`;
-
-        fetch(apiUrl)
-          .then((response) => response.json())
           .then((data) => {
-            const visibleArticles = data.articles.slice(0, 10); // Get the first 10 articles
+            console.log("Success:", data);
+            button.innerHTML = originalText;
+            button.disabled = false;
+            resultMessage.innerHTML =
+              '<span class="text-green-500">Berhasil ditambahkan</span>';
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            button.innerHTML = originalText;
+            button.disabled = false;
+            resultMessage.innerHTML = `<span class="text-red-500">${error.message}</span>`;
+          });
+      });
 
-            const visibleCardList = document.querySelector(
-              "#visible-cards .swiper-wrapper"
-            );
+    document
+      .getElementById("medicineForm")
+      .addEventListener("submit", function (event) {
+        event.preventDefault();
+        // Add any additional form submission logic here
+        console.log("Form submitted");
+      });
+  </script>
 
-            // Loop through visible articles to create visible card elements
-            visibleArticles.forEach((article, index) => {
-              const card = createCard(article);
-              visibleCardList.appendChild(card);
-            });
+  <!-- Artikel -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const apiKey = "4f4be2944983451b8d00be76dcc5e62b";
+      const apiUrl = `https://newsapi.org/v2/everything?apiKey=${apiKey}&q=health`;
 
-            // Initialize Swiper
-            const swiper = new Swiper(".swiper-container", {
-              slidesPerView: "auto", // Number of slides per view
-              spaceBetween: 16, // Space between each slide
-              loop: false, // Enable loop mode
-              navigation: {
-                nextEl: ".swiper-button-next",
-                prevEl: ".swiper-button-prev",
-              },
-            });
+      fetch(apiUrl)
+        .then((response) => response.json())
+        .then((data) => {
+          const visibleArticles = data.articles.slice(0, 10); // Get the first 10 articles
 
-            // Function to create card element
-            function createCard(article) {
-              const card = document.createElement("div");
-              card.className =
-                "card swiper-slide bg-white rounded-lg p-4 w-full md:w-1/2 lg:w-1/3 xl:w-1/5 flex flex-col justify-between overflow-hidden";
-              card.innerHTML = `
+          const visibleCardList = document.querySelector(
+            "#visible-cards .swiper-wrapper"
+          );
+
+          // Loop through visible articles to create visible card elements
+          visibleArticles.forEach((article, index) => {
+            const card = createCard(article);
+            visibleCardList.appendChild(card);
+          });
+
+          // Initialize Swiper
+          const swiper = new Swiper(".swiper-container", {
+            slidesPerView: "auto", // Number of slides per view
+            spaceBetween: 16, // Space between each slide
+            loop: false, // Enable loop mode
+            navigation: {
+              nextEl: ".swiper-button-next",
+              prevEl: ".swiper-button-prev",
+            },
+          });
+
+          // Function to create card element
+          function createCard(article) {
+            const card = document.createElement("div");
+            card.className =
+              "card swiper-slide bg-white rounded-lg p-4 w-full md:w-1/2 lg:w-1/3 xl:w-1/5 flex flex-col justify-between overflow-hidden";
+            card.innerHTML = `
                 <a href="${article.url}" target="_blank" class="block h-full">
-                  <img src="${article.urlToImage}" alt="${
-                article.title
+                  <img src="${article.urlToImage}" alt="${article.title
               }" class="w-full h-32 object-cover rounded-md" />
                   <div class="text-container">
-                    <h2 class="text-lg font-semibold mt-2 line-clamp-2">${
-                      article.title
-                    }</h2>
-                    <p class="text-gray-600 mt-2 line-clamp-2">${
-                      article.description
-                    }</p>
+                    <h2 class="text-lg font-semibold mt-2 line-clamp-2">${article.title
+              }</h2>
+                    <p class="text-gray-600 mt-2 line-clamp-2">${article.description
+              }</p>
                     <p class="text-sm text-gray-400 mt-2">Published At: ${new Date(
-                      article.publishedAt
-                    ).toLocaleDateString()}</p>
+                article.publishedAt
+              ).toLocaleDateString()}</p>
                   </div>
                 </a>
               `;
-              return card;
-            }
-          })
-          .catch((error) => console.error("Error fetching data:", error));
+            return card;
+          }
+        })
+        .catch((error) => console.error("Error fetching data:", error));
+    });
+  </script>
+
+  <!-- delete Job -->
+  <script>
+    document.addEventListener("DOMContentLoaded", async function () {
+      const medicineForm = document.getElementById('medicineForm');
+      const resultMessage = document.getElementById('resultMessage');
+      const submitButton = document.getElementById('submitButton');
+      const buttonText = document.getElementById('buttonText');
+      const spinner = document.getElementById('spinner');
+
+      medicineForm.addEventListener('submit', async function (event) {
+        event.preventDefault();
+
+        const namaObat = document.getElementById('namaObat').value;
+        const jam = document.getElementById('jam').value;
+        const menit = document.getElementById('menit').value;
+        const uid = getCookie('uid');
+
+        if (!namaObat || !jam || !menit || !uid) {
+          resultMessage.textContent = 'Please fill out all fields';
+          return;
+        }
+
+        try {
+          submitButton.disabled = true; // Disable the submit button
+          buttonText.classList.add('hidden'); // Hide the text in the button
+          spinner.classList.remove('hidden'); // Show the spinner
+
+          const emailResponse = await fetch(`/cekEmail?uid=${encodeURIComponent(uid)}`);
+          const emailData = await emailResponse.json();
+          if (!emailResponse.ok) {
+            resultMessage.textContent = emailData.message || 'Error checking email';
+            return;
+          }
+
+          const email = emailData.message;
+
+          const deleteResponse = await fetch(`/delete-detail-job?email=${encodeURIComponent(email)}&namaObat=${encodeURIComponent(namaObat)}&jam=${encodeURIComponent(jam)}&menit=${encodeURIComponent(menit)}`);
+
+          if (deleteResponse.ok) {
+            const responseData = await deleteResponse.text();
+            resultMessage.textContent = responseData;
+          } else {
+            const errorData = await deleteResponse.text();
+            resultMessage.textContent = errorData || 'Error deleting job detail';
+          }
+        } catch (error) {
+          console.error('An error occurred:', error);
+          resultMessage.textContent = 'An error occurred. Please try again.';
+        } finally {
+          submitButton.disabled = false; // Re-enable the submit button
+          buttonText.classList.remove('hidden'); // Show the text in the button
+          spinner.classList.add('hidden'); // Hide the spinner
+        }
       });
-    </script>
 
-    <!-- delete Job -->
-    <script>
-      
-    </script>
+      // Function to get cookie by name
+      function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+      }
+    });
 
-    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-  </body>
+  </script>
+
+  <!-- logout -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const logoutButton = document.querySelector('#logoutButton');
+
+      logoutButton.addEventListener('click', function () {
+        // Hapus cookie 'uid'
+        document.cookie = "uid=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+
+        // Arahkan ke halaman login
+        window.location.href = '/to/to-login';
+      });
+    });
+  </script>
+
+  <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+</body>
+
 </html>

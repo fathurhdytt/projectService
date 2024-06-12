@@ -197,8 +197,10 @@ router.get('/delete-detail-job', async (req, res) => {
       res.status(400).send(result); // Mengirim pesan error jika tidak berhasil
     }
   } catch (error) {
-    res.status(400).send(error.message); // Mengirim pesan error jika terjadi kesalahan
+    console.error('Error deleting job detail:', error);
+    res.status(400).send("Error deleting job detail"); // Mengirim pesan error jika terjadi kesalahan
   }
 });
+
 module.exports = router;
 
