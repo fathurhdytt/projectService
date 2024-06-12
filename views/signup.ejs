@@ -173,7 +173,7 @@
       const passwordInput = document.getElementById('password');
       const errorMessage = document.getElementById('password-error');
       const password = passwordInput.value;
-
+  
       if (password.length < 6) {
         passwordInput.classList.add('invalid');
         passwordInput.classList.remove('valid');
@@ -184,24 +184,24 @@
         errorMessage.style.display = 'none';
       }
     });
-
+  
     document.getElementById('registrationForm').addEventListener('submit', async function (event) {
       event.preventDefault();
-
+  
       const name = document.getElementById('name').value;
       const email = document.getElementById('email').value;
       const password = document.getElementById('password').value;
       const submitButton = event.target.querySelector('button[type="submit"]');
       const spinner = document.createElement('span');
       spinner.classList.add('spinner');
-
+  
       if (password.length < 6) {
         return;
       }
-
+  
       submitButton.disabled = true;
       submitButton.appendChild(spinner);
-
+  
       try {
         const response = await fetch('/register', {
           method: 'POST',
@@ -210,23 +210,24 @@
           },
           body: JSON.stringify({ name, email, password })
         });
-
+  
         if (!response.ok) {
-          throw new Error('Network response was not ok');
+          const errorData = await response.json();
+          throw new Error(errorData.message || 'Network response was not ok');
         }
-
+  
         const data = await response.json();
         document.cookie = `uid=${data.message}; path=/`;
         window.location.href = '/';
       } catch (error) {
-        console.error('Error:', error);
-        // Add your error handling logic here
+        alert('Error: ' + error.message);
       } finally {
         submitButton.disabled = false;
         submitButton.removeChild(spinner);
       }
     });
   </script>
+  
 </body>
 
 </html>

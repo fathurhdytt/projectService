@@ -82,11 +82,11 @@ router.get('/send-email', async (req, res) => {
 router.post('/register', async (req, res) => {
   try {
     const { email, password, name } = req.body;
-    const result = await registerUser(email, password)// Menggunakan resultString di sini juga jika perlu
+    const result = await registerUser(email, password); // Menggunakan resultString di sini juga jika perlu
     const result2 = await addProfileToCollection(result, name, email);
     res.status(200).send({ message: result });
   } catch (error) {
-    res.status(400).send(error);
+    res.status(400).send({ message: error.message || 'An error occurred' });
   }
 });
 
@@ -169,19 +169,34 @@ router.get('/delete-job', async (req, res) => {
 })
 
 
-router.get('/forgetPassword',async (req, res) => {
+router.get('/forgetPassword', async (req, res) => {
   const email = req.query.email;
   try {
     const result = await sendPasswordReset(email);
-    if (result == "berhasil") {
+    if (result === 'berhasil') {
       res.status(200).send({ message: result });
     } else {
-      res.status(400).json(result);
+      res.status(400).send({ message: result });
     }
+  } catch (error) {
+    res.status(400).send({ message: error.message });
+  }
+});
+
+router.get('/delete-detail-job', async (req, res) => {
+  const email = req.query.email;
+  const namaObat = req.query.namaObat;
+  const jam = req.query.jam;
+  const menit = req.query.menit;
+  try {
+    const result = await deleteJobsDetail(email,namaObat,jam,menit);
+    if (result == "berhasil") {
+      res.status(200).send("berhasil");
+    }
+    res.status(400);
   } catch (error) {
     res.status(400).send(error)
   }
-})
-
+});
 module.exports = router;
 

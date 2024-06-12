@@ -21,5 +21,9 @@ map.get('/to-forgetPassword', (req, res) => {
 });
 
 
+map.get('/to-profile', (req, res) => {
+  res.render('profile');
+});
+
 module.exports = map;
 

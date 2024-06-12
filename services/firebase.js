@@ -4,7 +4,7 @@ const { getDoc, getDocs, addDoc, setDoc, doc, writeBatch, collection, query, col
 const { getFirestore } = require('firebase/firestore');
 const admin = require('firebase-admin');
 const firebase = require('firebase/app');
-const { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail} = require('firebase/auth');
+const { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail,fetchSignInMethodsForEmail} = require('firebase/auth');
 const { isSupported, getAnalytics } = require('firebase/analytics');
 
 // Initialize Firebase Admin SDK
@@ -306,15 +306,31 @@ const deleteJobs = async (namaObat, email) => {
   }
 }
 
-// Function to send password reset email
 const sendPasswordReset = async (email) => {
   try {
+    // Cek apakah email ada di koleksi Firestore
+    const profilesRef = collection(db, 'profiles');
+    const q = query(profilesRef, where('email', '==', email));
+    const querySnapshot = await getDocs(q);
+
+    if (querySnapshot.empty) {
+      console.error('Email tidak terdaftar di Firestore');
+      return 'email tidak terdaftar';
+    }
+
+    // Jika email terdaftar, lanjutkan dengan pengiriman email reset password
     await sendPasswordResetEmail(auth, email);
     console.log('Password reset email sent successfully');
     return 'berhasil';
   } catch (error) {
     console.error('Error sending password reset email:', error);
-    return 'error';
+    if (error.code === 'auth/invalid-email') {
+      return 'Email tidak valid';
+    } else if (error.code === 'auth/user-not-found') {
+      return 'Email tidak terdaftar';
+    } else {
+      return 'Terjadi kesalahan. Silakan coba lagi.';
+    }
   }
 };
 
