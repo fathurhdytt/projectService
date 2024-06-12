@@ -25,5 +25,9 @@ map.get('/to-profile', (req, res) => {
   res.render('profile');
 });
 
+map.get('/to-article', (req, res) => {
+  res.render('article');
+});
+
 module.exports = map;
 

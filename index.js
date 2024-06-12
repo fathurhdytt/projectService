@@ -31,4 +31,4 @@ app.use("/to", map);
 
 // connection
 const port = process.env.PORT || 3000;
-app.listen(port, () => console.log(`Listening to port ${port}`));
+app.listen(port, () => console.log(`Listening to port ${port} (http://localhost:${port})`));
