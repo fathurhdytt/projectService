@@ -2,9 +2,10 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <title>UPN SEHAT - Profile</title>
   <style>
@@ -15,7 +16,6 @@
     }
 
     .hero-section {
-      background-image: url("/img/background.png");
       background-size: cover;
       background-position: center;
     }
@@ -64,16 +64,17 @@
         </div>
 
         <!-- List -->
-        <nav id="nav-menu" class="hidden absolute py-2 bg-white shadow-lg rounded-lg max-w-[250px] w-full right-4 top-full lg:block lg:static lg:bg-transparent lg:max-w-full lg:shadow-none lg:rounded-none">
+        <nav id="nav-menu"
+          class="hidden absolute py-2 bg-white shadow-lg rounded-lg max-w-[250px] w-full right-4 top-full lg:block lg:static lg:bg-transparent lg:max-w-full lg:shadow-none lg:rounded-none">
           <ul class="block lg:flex">
             <li class="group content-center">
               <a href="/" class="text-gray-900 mx-6 py-2 flex group-hover:text-blue-600">Beranda</a>
             </li>
             <li class="group content-center">
-              <a href="#jadwal-obat" class="text-gray-900 mx-6 py-2 flex group-hover:text-blue-600">Jadwal Obat</a>
+              <a href="#form-obat" class="text-gray-900 mx-6 py-2 flex group-hover:text-blue-600">Jadwal Obat</a>
             </li>
             <li class="group content-center">
-              <a href="#artikel" class="text-gray-900 mx-6 py-2 flex group-hover:text-blue-600">Artikel</a>
+              <a href="/to/to-article" class="text-gray-900 mx-6 py-2 flex group-hover:text-blue-600">Artikel</a>
             </li>
             <li class="group content-center">
               <a href="#video" class="text-gray-900 mx-6 py-2 flex group-hover:text-blue-600">Video</a>
@@ -82,26 +83,59 @@
               <a href="/to/to-aboutus" class="text-gray-900 mx-6 py-2 flex group-hover:text-blue-600">About Us</a>
             </li>
             <li class="group lg:ml-auto mx-6 space-x-2 py-2 flex content-center">
-              <button onclick="window.location.href='/to/to-login'" class="text-gray-800 px-4 py-2 rounded-md hover:bg-gray-400 focus:outline-none focus:ring focus:ring-gray-400 focus:ring-opacity-50 border-2 border-gray-200 w-full">Masuk</button>
-              <button onclick="window.location.href='/to/to-signup'" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring focus:ring-blue-600 focus:ring-opacity-50 w-full">Daftar</button>
+              <button id="logoutButton"
+                class="text-gray-800 px-4 py-2 rounded-md hover:bg-gray-400 focus:outline-none focus:ring focus:ring-gray-400 focus:ring-opacity-50 border-2 border-gray-200 w-full">
+                LogOut
+              </button>
+              <button onclick="window.location.href='/to/to-profile'"
+                class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring focus:ring-blue-600 focus:ring-opacity-50 w-full">
+                Profile
+              </button>
             </li>
           </ul>
         </nav>
       </div>
     </div>
   </header>
-
+  
   <!-- HERO SECTION -->
-  <div class="hero-section py-52">
-    <div class="container mx-auto p-8 flex items-center justify-between">
-      <div>
-        <h1 class="text-6xl text-gray-900 font-bold mb-4">USER</h1>
-        <p class="text-gray-600">
-          @21105111
-        </p>
+  <div class="hero-section py-8 lg:py-32 mb-32 mt-20">
+    <div class="container mx-auto px-4 lg:flex lg:items-start lg:justify-between lg:space-x-8">
+      <!-- Edit Profile Picture Section -->
+      <div class="w-full lg:w-1/2 flex flex-col items-center bg-white p-4 lg:p-8 rounded-md shadow-md">
+        <h1 class="text-2xl lg:text-3xl text-gray-900 font-bold mb-4">Edit Profile</h1>
+        <img src="/img/profil-image.jpg" alt="Profil Image" class="h-24 lg:h-32 w-24 lg:w-32 rounded-full mb-4">
+        <button
+          class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring focus:ring-blue-600 focus:ring-opacity-50">Upload
+          New Image</button>
       </div>
-      <div>
-        <img src="/img/profil-image.jpg" alt="Profil Image" class="h-32 w-32 rounded-full">
+      <!-- Edit Account Details Section -->
+      <div class="w-full lg:w-1/2 bg-white p-4 lg:p-8 rounded-md shadow-md">
+        <h1 class="text-2xl lg:text-3xl text-gray-900 font-bold mb-4">Edit Account Details</h1>
+        <div class="mb-4">
+          <label for="username" class="block text-gray-700">Name</label>
+          <input type="text" id="username" name="username" class="mt-1 p-2 border border-gray-300 rounded-md w-full">
+        </div>
+        <div class="mb-4">
+          <label for="email" class="block text-gray-700">Email Address</label>
+          <input type="email" id="email" name="email" class="mt-1 p-2 border border-gray-300 rounded-md w-full"
+            disabled>
+        </div>
+        <div class="mb-4 grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <div>
+            <label for="phone" class="block text-gray-700">Phone Number</label>
+            <input type="text" id="phone" name="phone" class="mt-1 p-2 border border-gray-300 rounded-md w-full">
+          </div>
+          <div>
+            <label for="birthday" class="block text-gray-700">Birth Date</label>
+            <input type="date" id="birthday" name="birthday" class="mt-1 p-2 border border-gray-300 rounded-md w-full">
+          </div>
+        </div>
+        <div class="flex justify-end mt-4">
+          <button id="saveChangesBtn"
+            class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring focus:ring-blue-600 focus:ring-opacity-50">Save
+            Changes</button>
+        </div>
       </div>
     </div>
   </div>
@@ -111,13 +145,140 @@
     <div class="container mx-auto flex items-center justify-between">
       <!-- Logo -->
       <div class="logo flex space-x-3">
-        <img src="/img/upnsehat-kecil.png" alt="Logo" class="h-8" />
-        <img src="/img/upn-kecil.png" alt="Logo" class="h-8" />
+        <img src="/img/upnsehat-kecil.png" alt="Logo" class="h-8">
+        <img src="/img/upn-kecil.png" alt="Logo" class="h-8">
       </div>
       <!-- Hak Cipta -->
       <p class="text-sm text-gray-900">&copy; 2024, Studi Informatika, Fakultas Ilmu Komputer. Hak Cipta Dilindungi</p>
     </div>
   </footer>
+
+  <!-- Hmaburger Logic -->
+  <script>
+    const hamburger = document.querySelector("#hamburger");
+    const navMenu = document.querySelector("#nav-menu");
+
+    hamburger.addEventListener("click", function () {
+      hamburger.classList.toggle("hamburger-active");
+      navMenu.classList.toggle("hidden");
+    });
+  </script>
+
+  <!-- logout -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const logoutButton = document.querySelector('#logoutButton');
+
+      logoutButton.addEventListener('click', function () {
+        // Hapus cookie 'uid'
+        document.cookie = "uid=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+
+        // Arahkan ke halaman login
+        window.location.href = '/to/to-login';
+      });
+    });
+  </script>
+
+  <!-- Jika Belum Login maka akan ke Login.ejs -->
+  <script>
+    // Fungsi untuk mendapatkan nilai cookie berdasarkan nama
+    function getCookie(name) {
+      let cookieArr = document.cookie.split(";");
+
+      for (let i = 0; i < cookieArr.length; i++) {
+        let cookiePair = cookieArr[i].split("=");
+
+        /* Menghapus spasi di awal nama cookie dan membandingkannya dengan string "name" */
+        if (name == cookiePair[0].trim()) {
+          // Mengembalikan nilai dari cookie
+          return decodeURIComponent(cookiePair[1]);
+        }
+      }
+
+      // Mengembalikan null jika tidak ada cookie yang ditemukan
+      return null;
+    }
+
+    // Memeriksa apakah cookie "email" ada
+    let emailCookie = getCookie("uid");
+
+    if (emailCookie === null) {
+      // Mengarahkan ke halaman login jika cookie tidak ditemukan
+      window.location.href = "/to/to-login";
+    }
+  </script>
+
+  <!-- get data -->
+  <script>
+    // Mendapatkan UID dari cookie
+    function getCookie(name) {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+
+    const uid = getCookie('uid');
+
+    // Mendapatkan data profil dari endpoint /cek-profile
+    fetch(`/cek-profile?uid=${uid}`)
+      .then(response => response.json())
+      .then(data => {
+        // Mengisi nilai input dengan data yang diterima
+        document.getElementById('username').value = data.nama || '';
+        document.getElementById('email').value = data.email || '';
+        document.getElementById('phone').value = data.phoneNumber || '';
+        document.getElementById('birthday').value = data.birthDate || '';
+      })
+      .catch(error => console.error('Error:', error));
+  </script>
+
+  <!-- change profile -->
+  <script>
+    document.getElementById("saveChangesBtn").addEventListener("click", function () {
+      // Ambil nilai dari field yang diperlukan
+      var nama = document.getElementById("username").value;
+      var phoneNumber = document.getElementById("phone").value;
+      var birthDate = document.getElementById("birthday").value;
+
+      // Ambil uid dari cookie (jika Anda menyimpannya dalam cookie)
+      var uid = getCookie("uid");
+
+      // Buat URL dengan parameter yang sesuai
+      var url = "/update-profile?uid=" + uid + "&nama=" + encodeURIComponent(nama) + "&phoneNumber=" + encodeURIComponent(phoneNumber) + "&birthDate=" + birthDate;
+
+      // Kirim permintaan HTTP GET ke endpoint /update-profile
+      fetch(url)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return response.text();
+        })
+        .then(data => {
+          // Menampilkan respons dalam alert
+          alert(data);
+          console.log("Update successful:", data);
+          // Tambahkan logika atau tindakan tambahan setelah pembaruan berhasil
+        })
+        .catch(error => {
+          console.error("Error updating profile:", error);
+          // Tambahkan penanganan kesalahan jika diperlukan
+        });
+    });
+
+    // Fungsi untuk mendapatkan nilai dari cookie
+    function getCookie(name) {
+      var cookieArr = document.cookie.split("; ");
+      for (var i = 0; i < cookieArr.length; i++) {
+        var cookiePair = cookieArr[i].split("=");
+        if (cookiePair[0] === name) {
+          return cookiePair[1];
+        }
+      }
+      return null;
+    }
+  </script>
+
 </body>
 
 </html>

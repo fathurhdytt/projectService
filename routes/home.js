@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const router = express.Router();
 const { loginUser, registerUser, verifyToken, addDataToCollection, cekDataToCollection,
 checkEmailByUid, checkNamaByUid,addProfileToCollection,getCollectionCron, deleteJobs,
-deleteJobsDetail,sendPasswordReset} = require('../services/firebase')
+deleteJobsDetail,sendPasswordReset,getProfileById, updateProfileToCollection} = require('../services/firebase')
 const { sendEmail } = require('../services/mailer')
 const he = require('he');
 const axios = require('axios');
@@ -201,6 +201,48 @@ router.get('/delete-detail-job', async (req, res) => {
     res.status(400).send("Error deleting job detail"); // Mengirim pesan error jika terjadi kesalahan
   }
 });
+
+router.get('/cek-profile', async (req, res) => {
+  const uid = req.query.uid;
+  try {
+    // Call the function to get profile data
+    const profileData = await getProfileById(uid);
+    
+    if (profileData) {
+      // Send profile data as response
+      res.status(200).json(profileData);
+    } else {
+      // Send a 404 response if profile not found
+      res.status(404).send('Profile not found');
+    }
+  } catch (error) {
+    // Send a 400 response if there's an error
+    res.status(400).send("Error fetching profile");
+  }
+});
+
+
+router.get('/update-profile', async (req, res) => {
+  try {
+    const uid = req.query.uid;
+    const nama = req.query.nama;
+    const phoneNumber = req.query.phoneNumber;
+    const birthDate = req.query.birthDate;
+
+    // Memanggil fungsi untuk memperbarui profil
+    const result = await updateProfileToCollection(uid, nama, phoneNumber, birthDate);
+
+    if (result === 'berhasil') {
+      res.status(200).send('Profile successfully updated');
+    } else {
+      res.status(400).send('Failed to update profile');
+    }
+  } catch (error) {
+    console.error('Error updating profile:', error);
+    res.status(400).send('Internal server error');
+  }
+});
+
 
 module.exports = router;
 

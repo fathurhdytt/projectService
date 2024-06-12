@@ -56,7 +56,9 @@ const addProfileToCollection = async (uid, nama, email) => {
     // Menambahkan data profil ke dokumen
     await setDoc(docRef, {
       nama: nama,
-      email: email
+      email: email,
+      phoneNumber:"",
+      birthDate:""
     });
 
     console.log('Profile successfully added:', uid);
@@ -66,6 +68,54 @@ const addProfileToCollection = async (uid, nama, email) => {
     return 'error';
   }
 };
+
+const updateProfileToCollection = async (uid, nama, phoneNumber, birthDate) => {
+  try {
+    // Referensi ke dokumen di koleksi 'profiles' dengan UID sebagai ID dokumen
+    const docRef = doc(db, 'profiles', uid);
+
+    // Mengambil data profil yang ada untuk mendapatkan nilai email
+    const docSnap = await getDoc(docRef);
+    const email = docSnap.data().email; // Mendapatkan nilai email dari data profil yang ada
+
+    // Menambahkan data profil ke dokumen, termasuk nilai email
+    await setDoc(docRef, {
+      nama: nama,
+      email: email, // Menggunakan nilai email yang ada
+      phoneNumber: phoneNumber,
+      birthDate: birthDate
+    });
+
+    console.log('Profile successfully updated:', uid);
+    return 'berhasil';
+  } catch (error) {
+    console.error('Error updating profile:', error);
+    return 'error';
+  }
+};
+
+const getProfileById = async (docId) => {
+  try {
+    // Reference to the specific document in the 'profiles' collection
+    const docRef = doc(db, 'profiles', docId);
+    
+    // Fetch the document
+    const docSnap = await getDoc(docRef);
+    
+    if (docSnap.exists()) {
+      // Document data is found
+      console.log('Document data:', docSnap.data());
+      return docSnap.data();
+    } else {
+      // No such document
+      console.log('No such document!');
+      return null;
+    }
+  } catch (error) {
+    console.error('Error getting document:', error);
+    throw error;
+  }
+}
 
 // Function to check email by UID
 const checkEmailByUid = async (uid) => {
@@ -115,7 +165,6 @@ const registerUser = async (email, password) => {
     throw error;
   }
 };
-
 // Function to log in user with email and password using Client-side SDK
 const loginUser = async (email, password) => {
   try {
@@ -127,7 +176,6 @@ const loginUser = async (email, password) => {
     throw error;
   }
 };
-
 // Function to verify ID token using Admin SDK
 const verifyToken = async (idToken) => {
   try {
@@ -195,7 +243,6 @@ const cekDataToCollection = async (namaObat, email, newHoursString) => {
     return "error";
   }
 };
-
 
 const addDataToCollection = async (namaObat, email, newHoursString, id) => {
   try {
@@ -417,5 +464,7 @@ module.exports = {
   checkEmailByUid,
   checkNamaByUid,
   sendPasswordReset,
-  deleteJobsDetail
+  deleteJobsDetail,
+  getProfileById,
+  updateProfileToCollection
 };
