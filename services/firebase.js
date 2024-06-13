@@ -1,10 +1,10 @@
 // Import statements
 require('dotenv').config();
-const { getDoc, getDocs, addDoc, setDoc, doc, writeBatch, collection, query, collectionGroup, where } = require('firebase/firestore');
+const { getDoc, getDocs, addDoc, setDoc, doc, writeBatch, collection, query, collectionGroup, where, arrayRemove } = require('firebase/firestore');
 const { getFirestore } = require('firebase/firestore');
 const admin = require('firebase-admin');
 const firebase = require('firebase/app');
-const { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail,fetchSignInMethodsForEmail} = require('firebase/auth');
+const { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail, fetchSignInMethodsForEmail } = require('firebase/auth');
 const { isSupported, getAnalytics } = require('firebase/analytics');
 
 // Initialize Firebase Admin SDK
@@ -57,8 +57,8 @@ const addProfileToCollection = async (uid, nama, email) => {
     await setDoc(docRef, {
       nama: nama,
       email: email,
-      phoneNumber:"",
-      birthDate:""
+      phoneNumber: "",
+      birthDate: ""
     });
 
     console.log('Profile successfully added:', uid);
@@ -98,10 +98,10 @@ const getProfileById = async (docId) => {
   try {
     // Reference to the specific document in the 'profiles' collection
     const docRef = doc(db, 'profiles', docId);
-    
+
     // Fetch the document
     const docSnap = await getDoc(docRef);
-    
+
     if (docSnap.exists()) {
       // Document data is found
       console.log('Document data:', docSnap.data());
@@ -332,7 +332,15 @@ const deleteJobs = async (namaObat, email) => {
       });
 
       if (!response.ok) {
-        const errorResponse = await response.json();
+        const responseText = await response.text();
+        let errorResponse;
+        try {
+          errorResponse = JSON.parse(responseText);
+        } catch (e) {
+          // Log the responseText for debugging purposes
+          console.error('Error response from API:', responseText);
+          throw new Error(responseText || 'Error deleting job');
+        }
         throw new Error(errorResponse.message || 'Error deleting job');
       }
     }
@@ -351,7 +359,8 @@ const deleteJobs = async (namaObat, email) => {
     console.error('Error deleting jobs:', error);
     throw error;
   }
-}
+};
+
 const deleteJobsDetail = async (namaObat, email, jam, menit) => {
   if (!namaObat || !email || jam == null || menit == null) {
     throw new Error('namaObat, email, jam, and menit are required');
@@ -381,7 +390,7 @@ const deleteJobsDetail = async (namaObat, email, jam, menit) => {
       if (data.Hours) {
         data.Hours.forEach(hour => {
           if (hour.time === formattedTime) {
-            jobsToDelete.push({ jobId: hour.id, docId: doc.id });
+            jobsToDelete.push({ jobId: hour.id, docId: doc.id, hourEntry: hour });
           }
         });
       }
@@ -404,16 +413,20 @@ const deleteJobsDetail = async (namaObat, email, jam, menit) => {
       });
 
       if (!response.ok) {
-        const errorResponse = await response.json();
-        throw new Error(errorResponse.message || 'Error deleting job');
+        // Attempt to parse the response only if there is a response body
+        const errorResponse = response.headers.get('Content-Length') > 0 ? await response.json() : null;
+        const errorMessage = errorResponse ? errorResponse.message : 'Error deleting job';
+        throw new Error(errorMessage);
       }
     }
 
-    // Optionally, delete the documents from Firebase
+    // Update each document to remove the specific hour entry
     const batch = writeBatch(db);
-    jobsToDelete.forEach(({ docId }) => {
+    jobsToDelete.forEach(({ docId, hourEntry }) => {
       const docRef = doc(cronCollection, docId);
-      batch.delete(docRef);
+      batch.update(docRef, {
+        Hours: arrayRemove(hourEntry)
+      });
     });
     await batch.commit();
 
@@ -424,6 +437,7 @@ const deleteJobsDetail = async (namaObat, email, jam, menit) => {
     throw error;
   }
 };
+
 const sendPasswordReset = async (email) => {
   try {
     // Cek apakah email ada di koleksi Firestore

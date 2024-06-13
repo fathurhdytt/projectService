@@ -119,13 +119,15 @@
           <input type="email" id="email" name="email"
             class="mt-2 block w-full py-2 px-3 rounded-md outline-1 border-2 border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-600 focus:ring-opacity-50"
             placeholder="Masukkan Email" required />
+          <span class="error-message" id="email-error" style="display:none; color:red;">Email tidak valid.</span>
         </div>
         <div class="mb-4">
           <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
           <input type="password" id="password" name="password"
             class="mt-2 block w-full py-2 px-3 rounded-md outline-1 border-2 border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-600 focus:ring-opacity-50"
             placeholder="Masukkan Password" required />
-          <span class="error-message" id="password-error">Password harus terdiri dari minimal 6 karakter.</span>
+          <span class="error-message" id="password-error" style="display:none; color:red;">Password harus terdiri dari
+            minimal 6 karakter.</span>
         </div>
         <button type="submit"
           class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-opacity-50 my-6">
@@ -173,7 +175,7 @@
       const passwordInput = document.getElementById('password');
       const errorMessage = document.getElementById('password-error');
       const password = passwordInput.value;
-  
+
       if (password.length < 6) {
         passwordInput.classList.add('invalid');
         passwordInput.classList.remove('valid');
@@ -184,24 +186,34 @@
         errorMessage.style.display = 'none';
       }
     });
-  
+
     document.getElementById('registrationForm').addEventListener('submit', async function (event) {
       event.preventDefault();
-  
+
       const name = document.getElementById('name').value;
       const email = document.getElementById('email').value;
       const password = document.getElementById('password').value;
       const submitButton = event.target.querySelector('button[type="submit"]');
+      const emailErrorMessage = document.getElementById('email-error');
       const spinner = document.createElement('span');
       spinner.classList.add('spinner');
-  
+
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      if (!emailPattern.test(email)) {
+        emailErrorMessage.style.display = 'block';
+        return;
+      } else {
+        emailErrorMessage.style.display = 'none';
+      }
+
       if (password.length < 6) {
         return;
       }
-  
+
       submitButton.disabled = true;
       submitButton.appendChild(spinner);
-  
+
       try {
         const response = await fetch('/register', {
           method: 'POST',
@@ -210,12 +222,12 @@
           },
           body: JSON.stringify({ name, email, password })
         });
-  
+
         if (!response.ok) {
           const errorData = await response.json();
           throw new Error(errorData.message || 'Network response was not ok');
         }
-  
+
         const data = await response.json();
         document.cookie = `uid=${data.message}; path=/`;
         window.location.href = '/';

@@ -97,7 +97,7 @@
       </div>
     </div>
   </header>
-  
+
   <!-- HERO SECTION -->
   <div class="hero-section py-8 lg:py-32 mb-32 mt-20">
     <div class="container mx-auto px-4 lg:flex lg:items-start lg:justify-between lg:space-x-8">
@@ -207,6 +207,20 @@
       window.location.href = "/to/to-login";
     }
   </script>
+  <!-- logout -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const logoutButton = document.querySelector('#logoutButton');
+
+      logoutButton.addEventListener('click', function () {
+        // Hapus cookie 'uid'
+        document.cookie = "uid=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+
+        // Arahkan ke halaman login
+        window.location.href = '/to/to-login';
+      });
+    });
+  </script>
 
   <!-- get data -->
   <script>
@@ -279,6 +293,8 @@
     }
   </script>
 
+
+</script>
 </body>
 
 </html>
