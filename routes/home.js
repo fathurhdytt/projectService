@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const router = express.Router();
 const { loginUser, registerUser, verifyToken, addDataToCollection, cekDataToCollection,
 checkEmailByUid, checkNamaByUid,addProfileToCollection,getCollectionCron, deleteJobs,
-deleteJobsDetail,sendPasswordReset,getProfileById, updateProfileToCollection} = require('../services/firebase')
+deleteJobsDetail,sendPasswordReset,getProfileById, updateProfileToCollection,upload,uploadFile} = require('../services/firebase')
 const { sendEmail } = require('../services/mailer')
 const he = require('he');
 const axios = require('axios');
@@ -243,6 +243,23 @@ router.get('/update-profile', async (req, res) => {
   }
 });
 
+// POST /upload endpoint to handle file upload
+router.post('/upload', upload.single('file'), async (req, res) => {
+  try {
+    const file = req.file;
+    const uid = req.body.uid; // Get uid from request body
+
+    if (!file || !uid) {
+      throw new Error('File or UID not provided');
+    }
+
+    const result = await uploadFile(file, uid);
+    res.status(200).json({ message: result }); // Return the download URL
+  } catch (error) {
+    console.error('Error uploading file:', error);
+    res.status(500).send(error.message);
+  }
+});
 
 module.exports = router;
 

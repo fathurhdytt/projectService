@@ -6,6 +6,8 @@ const admin = require('firebase-admin');
 const firebase = require('firebase/app');
 const { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail, fetchSignInMethodsForEmail } = require('firebase/auth');
 const { isSupported, getAnalytics } = require('firebase/analytics');
+const { getStorage, ref, uploadBytes, getDownloadURL } = require('firebase/storage');
+const multer = require('multer');
 
 // Initialize Firebase Admin SDK
 admin.initializeApp({
@@ -47,7 +49,44 @@ isSupported().then(supported => {
 });
 const auth = getAuth();
 const db = getFirestore();
+const storage = getStorage();
 
+// Multer configuration for file upload
+const upload = multer({
+  storage: multer.memoryStorage()
+});
+
+const uploadFile = async (file, uid) => {
+  try {
+    // Determine the content type based on file extension or other methods
+    let contentType = 'application/octet-stream'; // Default content type
+
+    // Example: Check if the file extension indicates an image
+    const imageExtensions = ['jpg', 'jpeg', 'png', 'gif'];
+    const fileExtension = file.originalname.split('.').pop().toLowerCase();
+    if (imageExtensions.includes(fileExtension)) {
+      contentType = `image/${fileExtension}`; // Set content type for image
+    }
+
+    // Storage reference
+    const storageRef = ref(storage, 'images/' + file.originalname);
+
+    // Upload bytes with content type
+    await uploadBytes(storageRef, file.buffer, { contentType });
+
+    // Get the download URL
+    const url = await getDownloadURL(storageRef);
+
+    // Update Firestore document
+    const profileRef = doc(db, 'profiles', uid);
+    await setDoc(profileRef, { image: url }, { merge: true }); // Merge true to update existing document
+
+    return "berhasil"; // Return the download URL and content type
+  } catch (error) {
+    console.error('Error uploading file:', error);
+    throw new Error('Failed to upload file');
+  }
+};
 const addProfileToCollection = async (uid, nama, email) => {
   try {
     // Referensi ke dokumen di koleksi 'profiles' dengan UID sebagai ID dokumen
@@ -480,5 +519,7 @@ module.exports = {
   sendPasswordReset,
   deleteJobsDetail,
   getProfileById,
-  updateProfileToCollection
+  updateProfileToCollection,
+  upload,
+  uploadFile
 };

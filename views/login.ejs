@@ -10,6 +10,8 @@
 </head>
 
 <body class="bg-gray-100">
+  <div id="notification-container" class="fixed bottom-4 left-4 space-y-2"></div>
+
   <!-- NAVBAR -->
   <header class="bg-white fixed top-0 left-0 w-full flex items-center z-50 border-b-2 border-gray-100">
     <div class="container mx-auto">
@@ -150,16 +152,30 @@
         if (response.ok) {
           const data = await response.json();
           document.cookie = `uid=${data.message}; path=/`;
-          alert('Login successful!');
+          showNotification('Login successful!', 'success');
           window.location.href = '/';
         } else {
           const error = await response.json();
-          alert('Error: ' + error.message);
+          showNotification('Login Gagal: ' + 'Email/Password Salah');
         }
       } catch (error) {
-        alert('Error: ' + error.message);
+        showNotification('Login Gagal: ' + 'Email/Password Salah');
       }
     });
+
+    function showNotification(message, type) {
+      const container = document.getElementById('notification-container');
+      const notification = document.createElement('div');
+
+      notification.className = `px-4 py-2 rounded text-white ${type === 'success' ? 'bg-green-500' : 'bg-red-500'}`;
+      notification.innerText = message;
+
+      container.appendChild(notification);
+
+      setTimeout(() => {
+        notification.remove();
+      }, 3000); // Remove the notification after 3 seconds
+    }
   </script>
 
   <!-- login with google -->
