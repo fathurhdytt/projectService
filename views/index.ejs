@@ -58,6 +58,7 @@
       <button id="cancel-btn" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">No</button>
     </div>
   </dialog>
+
   <!-- NAVBAR -->
   <header class="bg-white fixed top-0 left-0 w-full flex items-center z-50 border-b-2 border-gray-100">
     <div class="container mx-auto">
@@ -85,13 +86,10 @@
               <a href="/" class="text-gray-900 mx-6 py-2 flex group-hover:text-blue-600">Beranda</a>
             </li>
             <li class="group content-center">
-              <a href="#form-obat" class="text-gray-900 mx-6 py-2 flex group-hover:text-blue-600">Jadwal Obat</a>
-            </li>
-            <li class="group content-center">
               <a href="/to/to-article" class="text-gray-900 mx-6 py-2 flex group-hover:text-blue-600">Artikel</a>
             </li>
             <li class="group content-center">
-              <a href="#video" class="text-gray-900 mx-6 py-2 flex group-hover:text-blue-600">Video</a>
+              <a href="/to/to-video" class="text-gray-900 mx-6 py-2 flex group-hover:text-blue-600">Video</a>
             </li>
             <li class="group content-center">
               <a href="/to/to-aboutus" class="text-gray-900 mx-6 py-2 flex group-hover:text-blue-600">About Us</a>
@@ -111,6 +109,7 @@
       </div>
     </div>
   </header>
+
 
   <!-- Hero -->
   <div class="hero-section py-52">
@@ -230,14 +229,13 @@
 
       <!-- Swiper Navigation Buttons -->
       <div class="head-section">
-        <div id="visible-cards" class="swiper-container my-4 overflow-hidden">
+        <div id="news-cards" class="swiper-container my-4 overflow-hidden">
           <div class="swiper-wrapper">
             <!-- Repeat more slides as needed -->
           </div>
           <div class="swiper-pagination"></div>
 
           <!-- Add Navigation -->
-
           <button class="swiper-button-next text-white p-8 rounded-full bg-black bg-opacity-30">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
               stroke="currentColor" class="w-2 h-2">
@@ -254,6 +252,42 @@
       </div>
     </div>
   </section>
+
+  <!-- VIDEO SECTION -->
+  <section id="video-section" class="video my-20 relative">
+    <div class="container mx-auto px-8">
+      <div class="card-news">
+        <div class="head-section flex">
+          <h2 class="text-2xl font-bold mr-auto">Vidio Terbaru</h2>
+        </div>
+      </div>
+
+      <!-- Swiper Navigation Buttons -->
+      <div class="head-section">
+        <div id="video-cards" class="swiper-container my-4 overflow-hidden">
+          <div class="swiper-wrapper">
+            <!-- Repeat more slides as needed -->
+          </div>
+          <div class="swiper-pagination"></div>
+
+          <!-- Add Navigation -->
+          <button class="swiper-button-next text-white p-8 rounded-full bg-black bg-opacity-30">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+              stroke="currentColor" class="w-2 h-2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+          <button class="swiper-button-prev text-white p-8 rounded-full bg-black bg-opacity-30">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+              stroke="currentColor" class="w-2 h-2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
 
   <footer class="bg-white text-white p-4">
     <div class="container mx-auto flex items-center justify-between">
@@ -552,18 +586,16 @@
         .then((data) => {
           const visibleArticles = data.articles.slice(0, 10); // Get the first 10 articles
 
-          const visibleCardList = document.querySelector(
-            "#visible-cards .swiper-wrapper"
-          );
+          const visibleCardList = document.querySelector("#news-cards .swiper-wrapper");
 
           // Loop through visible articles to create visible card elements
-          visibleArticles.forEach((article, index) => {
+          visibleArticles.forEach((article) => {
             const card = createCard(article);
             visibleCardList.appendChild(card);
           });
 
           // Initialize Swiper
-          const swiper = new Swiper(".swiper-container", {
+          const swiper = new Swiper("#news-cards", {
             slidesPerView: "auto", // Number of slides per view
             spaceBetween: 16, // Space between each slide
             loop: false, // Enable loop mode
@@ -579,20 +611,74 @@
             card.className =
               "card swiper-slide bg-white rounded-lg p-4 w-full md:w-1/2 lg:w-1/3 xl:w-1/5 flex flex-col justify-between overflow-hidden";
             card.innerHTML = `
-                <a href="${article.url}" target="_blank" class="block h-full">
-                  <img src="${article.urlToImage}" alt="${article.title
-              }" class="w-full h-32 object-cover rounded-md" />
-                  <div class="text-container">
-                    <h2 class="text-lg font-semibold mt-2 line-clamp-2">${article.title
-              }</h2>
-                    <p class="text-gray-600 mt-2 line-clamp-2">${article.description
-              }</p>
-                    <p class="text-sm text-gray-400 mt-2">Published At: ${new Date(
-                article.publishedAt
-              ).toLocaleDateString()}</p>
-                  </div>
-                </a>
-              `;
+            <a href="${article.url}" target="_blank" class="block h-full">
+              <img src="${article.urlToImage}" alt="${article.title}" class="w-full h-32 object-cover rounded-md" />
+              <div class="text-container">
+                <h2 class="text-lg font-semibold mt-2 line-clamp-2">${article.title}</h2>
+                <p class="text-gray-600 mt-2 line-clamp-2">${article.description}</p>
+                <p class="text-sm text-gray-400 mt-2">Published At: ${new Date(article.publishedAt).toLocaleDateString()}</p>
+              </div>
+            </a>
+          `;
+            return card;
+          }
+        })
+        .catch((error) => console.error("Error fetching data:", error));
+    });
+  </script>
+
+  <!-- vIDEO -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const apiUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=kesehatan&type=video&maxResults=10&key=AIzaSyDODsBfBfjJGEbWmzAY-6wd_edR78rk5Ro`;
+
+      fetch(apiUrl)
+        .then((response) => response.json())
+        .then((data) => {
+          const visibleVideos = data.items.slice(0, 10); // Get the first 10 videos
+
+          const visibleCardList = document.querySelector("#video-cards .swiper-wrapper");
+
+          // Loop through visible videos to create visible card elements
+          visibleVideos.forEach((item) => {
+            const videoId = item.id.videoId;
+            const snippet = item.snippet;
+            const card = createCard({
+              url: `https://www.youtube.com/watch?v=${videoId}`,
+              urlToImage: snippet.thumbnails.high.url,
+              title: snippet.title,
+              description: snippet.description,
+              publishedAt: snippet.publishTime
+            });
+            visibleCardList.appendChild(card);
+          });
+
+          // Initialize Swiper
+          const swiper = new Swiper("#video-cards", {
+            slidesPerView: "auto", // Number of slides per view
+            spaceBetween: 16, // Space between each slide
+            loop: false, // Enable loop mode
+            navigation: {
+              nextEl: ".swiper-button-next",
+              prevEl: ".swiper-button-prev",
+            },
+          });
+
+          // Function to create card element
+          function createCard(video) {
+            const card = document.createElement("div");
+            card.className =
+              "card swiper-slide bg-white rounded-lg p-4 w-full md:w-1/2 lg:w-1/3 xl:w-1/5 flex flex-col justify-between overflow-hidden";
+            card.innerHTML = `
+            <a href="${video.url}" target="_blank" class="block h-full">
+              <img src="${video.urlToImage}" alt="${video.title}" class="w-full h-32 object-cover rounded-md" />
+              <div class="text-container">
+                <h2 class="text-lg font-semibold mt-2 line-clamp-2">${video.title}</h2>
+                <p class="text-gray-600 mt-2 line-clamp-2">${video.description}</p>
+                <p class="text-sm text-gray-400 mt-2">Published At: ${new Date(video.publishedAt).toLocaleDateString()}</p>
+              </div>
+            </a>
+          `;
             return card;
           }
         })
@@ -633,7 +719,7 @@
           const emailData = await emailResponse.json();
           if (!emailResponse.ok) {
             resultMessage.innerHTML =
-            '<span class="text-red-500">Wrong Email!</span>';
+              '<span class="text-red-500">Wrong Email!</span>';
             return;
           }
 

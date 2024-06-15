@@ -15,10 +15,47 @@
       font-family: "Inter", sans-serif;
     }
 
-    .hero-section {
-      background-image: url("/img/background.png");
-      background-size: cover;
-      background-position: center;
+    body {
+      background-color: #f7fafc;
+    }
+
+    .video-card {
+      background-color: #fff;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .video-card img {
+      width: 100%;
+      height: auto;
+      border-radius: 0.5rem;
+    }
+
+    .text-container {
+      margin-top: 1rem;
+    }
+
+    .text-container h2 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      line-height: 1.5;
+      color: #2d3748;
+      margin-bottom: 0.5rem;
+    }
+
+    .text-container p {
+      font-size: 1rem;
+      line-height: 1.5;
+      color: #4a5568;
+      margin-top: 0.5rem;
+    }
+
+    .text-container .text-sm {
+      font-size: 0.875rem;
+      color: #cbd5e0;
+      margin-top: 0.5rem;
     }
 
     .spinner {
@@ -38,10 +75,6 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-    }
-
-    .news-item {
-      margin-bottom: 10px;
     }
 
     .pagination {
@@ -64,7 +97,7 @@
   </style>
 </head>
 
-<body class="bg-gray-100 w-full font-inter">
+<body class="font-inter">
   <!-- NAVBAR -->
   <header class="bg-white fixed top-0 left-0 w-full flex items-center z-50 border-b-2 border-gray-100">
     <div class="container mx-auto">
@@ -116,21 +149,20 @@
     </div>
   </header>
 
-
-  <!-- NEWS SECTION -->
-  <section id="news-section" class="news my-20 relative">
+  <!-- VIDEO SECTION -->
+  <section id="video-section" class="video my-20 relative">
     <div class="container mx-auto px-8 mt-[150px]">
-      <div class="card-news">
+      <div class="card-video">
         <div class="head-section flex">
-          <h2 class="text-2xl font-bold mr-auto">Berita Terbaru</h2>
+          <h2 class="text-2xl font-bold mr-auto">Video Terbaru</h2>
         </div>
       </div>
 
-      <!-- Spinner -->
-      <div id="spinner" class="spinner" style="display:none;"></div>
+      <!-- Video Spinner -->
+      <div id="video-spinner" class="spinner" style="display:none;"></div>
 
-      <div id="news-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-        <!-- Berita akan diisi di sini oleh JavaScript -->
+      <div id="video-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        <!-- Video akan diisi di sini oleh JavaScript -->
       </div>
 
       <!-- Pagination Buttons -->
@@ -157,72 +189,84 @@
 
   <script>
     document.addEventListener("DOMContentLoaded", function () {
-      const apiKey = "4f4be2944983451b8d00be76dcc5e62b";
-      const apiUrl = `https://newsapi.org/v2/everything?apiKey=${apiKey}&q=health`;
-      const spinner = document.getElementById("spinner");
-      const newsContainer = document.getElementById("news-container");
+      const youtubeApiKey = "AIzaSyDODsBfBfjJGEbWmzAY-6wd_edR78rk5Ro";
+      const youtubeApiUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=kesehatan&type=video&maxResults=200&key=${youtubeApiKey}`;
+      const videoSpinner = document.getElementById("video-spinner");
+      const videoContainer = document.getElementById("video-container");
       const pagination = document.getElementById("pagination");
 
-      spinner.style.display = "flex";
+      const videosPerPage = 20;
+      let currentPage = 1;
+      let videos = [];
 
-      fetch(apiUrl)
+      // Menampilkan spinner untuk video
+      videoSpinner.style.display = "flex";
+
+      // Fetch data video dari YouTube
+      fetch(youtubeApiUrl)
         .then((response) => response.json())
         .then((data) => {
-          const articles = data.articles;
-          const articlesPerPage = 20;
-          const totalPages = Math.ceil(articles.length / articlesPerPage);
-          let currentPage = 1;
-
-          function renderPage(page) {
-            newsContainer.innerHTML = "";
-            const start = (page - 1) * articlesPerPage;
-            const end = start + articlesPerPage;
-            const pageArticles = articles.slice(start, end);
-
-            pageArticles.forEach((article) => {
-              const card = createCard(article);
-              newsContainer.appendChild(card);
-            });
-
-            renderPagination();
-          }
-
-          function renderPagination() {
-            pagination.innerHTML = "";
-            for (let i = 1; i <= totalPages; i++) {
-              const button = document.createElement("button");
-              button.className = `px-4 py-2 mx-1 rounded-md ${i === currentPage ? 'bg-blue-600 text-white' : 'bg-white text-blue-600 border border-blue-600'}`;
-              button.textContent = i;
-              button.addEventListener("click", () => {
-                currentPage = i;
-                renderPage(currentPage);
-              });
-              pagination.appendChild(button);
-            }
-          }
-
-          function createCard(article) {
-            const card = document.createElement("div");
-            card.className = "card bg-white rounded-lg p-4 flex flex-col justify-between overflow-hidden";
-            card.innerHTML = `
-              <a href="${article.url}" target="_blank" class="block h-full">
-                <img src="${article.urlToImage}" alt="${article.title}" class="w-full h-32 object-cover rounded-md" />
-                <div class="text-container mt-4">
-                  <h2 class="text-lg font-semibold line-clamp-2">${article.title}</h2>
-                  <p class="text-gray-600 mt-2 line-clamp-2">${article.description}</p>
-                  <p class="text-sm text-gray-400 mt-2">Published At: ${new Date(article.publishedAt).toLocaleDateString()}</p>
-                </div>
-              </a>
-            `;
-            return card;
-          }
-
+          videos = data.items;
           renderPage(currentPage);
         })
-        .catch((error) => console.error("Error fetching data:", error))
+        .catch((error) => console.error("Error fetching YouTube data:", error))
         .finally(() => {
-          spinner.style.display = "none";
+          videoSpinner.style.display = "none";
         });
+
+      function renderPage(page) {
+        videoContainer.innerHTML = "";
+        const start = (page - 1) * videosPerPage;
+        const end = start + videosPerPage;
+        const pageVideos = videos.slice(start, end);
+
+        pageVideos.forEach((video) => {
+          const videoId = video.id.videoId;
+          const title = video.snippet.title;
+          const description = video.snippet.description;
+          const publishedAt = video.snippet.publishTime;
+          const imageUrl = video.snippet.thumbnails.high.url;
+
+          const videoElement = createVideoElement(videoId, title, description, publishedAt, imageUrl);
+          videoContainer.appendChild(videoElement);
+        });
+
+        renderPagination();
+      }
+
+      function renderPagination() {
+        pagination.innerHTML = "";
+        const totalPages = Math.ceil(videos.length / videosPerPage);
+
+        for (let i = 1; i <= totalPages; i++) {
+          const button = document.createElement("button");
+          button.className = `px-3 py-1 mx-1 rounded ${i === currentPage ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-800'}`;
+          button.textContent = i;
+          button.addEventListener("click", () => {
+            currentPage = i;
+            renderPage(currentPage);
+          });
+          pagination.appendChild(button);
+        }
+      }
+
+      function createVideoElement(videoId, title, description, publishedAt, imageUrl) {
+        const videoUrl = `https://www.youtube.com/watch?v=${videoId}`;
+
+        const card = document.createElement("div");
+        card.className = "video-card bg-white rounded-lg p-4 flex flex-col justify-between overflow-hidden";
+        card.innerHTML = `
+          <a href="${videoUrl}" target="_blank" class="block h-full">
+            <img src="${imageUrl}" alt="${title}" class="w-full h-32 object-cover rounded-md" />
+            <div class="text-container mt-4">
+              <h2 class="text-lg font-semibold line-clamp-2">${title}</h2>
+              <p class="text-gray-600 mt-2 line-clamp-2">${description}</p>
+              <p class="text-sm text-gray-400 mt-2">Published At: ${new Date(publishedAt).toLocaleDateString()}</p>
+            </div>
+          </a>
+        `;
+        return card;
+      }
     });
   </script>
 </body>

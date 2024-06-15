@@ -28,6 +28,8 @@ map.get('/to-profile', (req, res) => {
 map.get('/to-article', (req, res) => {
   res.render('article');
 });
-
+map.get('/to-video', (req, res) => {
+  res.render('video');
+});
 module.exports = map;
 
