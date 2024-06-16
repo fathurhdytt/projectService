@@ -1,6 +1,9 @@
 ### UPN SEHAT Web Project
 
 UPN SEHAT is a web project built using Express.js framework with Tailwind CSS.
+#### Dokumentasi Request API POSTMAN
+
+[Lihat Dokumentasi](https://documenter.getpostman.com/view/29261916/2sA3XQi2eK)
 
 #### Cara Menjalankan Proyek Ini
 
