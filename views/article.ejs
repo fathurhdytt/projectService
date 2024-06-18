@@ -166,7 +166,12 @@
       spinner.style.display = "flex";
 
       fetch(apiUrl)
-        .then((response) => response.json())
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.json();
+        })
         .then((data) => {
           const articles = data.articles;
           const articlesPerPage = 20;
@@ -205,15 +210,15 @@
             const card = document.createElement("div");
             card.className = "card bg-white rounded-lg p-4 flex flex-col justify-between overflow-hidden";
             card.innerHTML = `
-              <a href="${article.url}" target="_blank" class="block h-full">
-                <img src="${article.urlToImage}" alt="${article.title}" class="w-full h-32 object-cover rounded-md" />
-                <div class="text-container mt-4">
-                  <h2 class="text-lg font-semibold line-clamp-2">${article.title}</h2>
-                  <p class="text-gray-600 mt-2 line-clamp-2">${article.description}</p>
-                  <p class="text-sm text-gray-400 mt-2">Published At: ${new Date(article.publishedAt).toLocaleDateString()}</p>
-                </div>
-              </a>
-            `;
+          <a href="${article.url}" target="_blank" class="block h-full">
+            <img src="${article.urlToImage}" alt="${article.title}" class="w-full h-32 object-cover rounded-md" />
+            <div class="text-container mt-4">
+              <h2 class="text-lg font-semibold line-clamp-2">${article.title}</h2>
+              <p class="text-gray-600 mt-2 line-clamp-2">${article.description}</p>
+              <p class="text-sm text-gray-400 mt-2">Published At: ${new Date(article.publishedAt).toLocaleDateString()}</p>
+            </div>
+          </a>
+        `;
             return card;
           }
 
