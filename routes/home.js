@@ -9,8 +9,20 @@ const { sendEmail } = require('../services/mailer')
 const he = require('he');
 const axios = require('axios');
 
+const apiKey = "4f4be2944983451b8d00be76dcc5e62b";
+const apiUrl = `https://newsapi.org/v2/everything?apiKey=${apiKey}&q=health`;
+
 router.get('/', (req, res) => {
   res.render('index');
+});
+
+router.get('/api/news', async (req, res) => {
+  try {
+    const response = await axios.get(apiUrl);
+    res.json(response.data);
+  } catch (error) {
+    res.status(400).send('Error fetching data from NewsAPI');
+  }
 });
 
 router.put('/create-job', async (req, res) => {
