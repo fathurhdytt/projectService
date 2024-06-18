@@ -578,8 +578,7 @@
   <!-- Artikel -->
   <script>
     document.addEventListener("DOMContentLoaded", function () {
-      const apiKey = "4f4be2944983451b8d00be76dcc5e62b";
-      const apiUrl = `https://newsapi.org/v2/everything?apiKey=${apiKey}&q=health`;
+      const apiUrl = `api/news`;
 
       fetch(apiUrl)
         .then((response) => response.json())
