@@ -246,7 +246,7 @@
 
         // Mengatur gambar profil (profile-image) dengan URL dari respons data.image
         const profileImage = document.getElementById('profile-image');
-        profileImage.src = data.image || profileImage.src; // Gunakan existing src jika data.image tidak tersedia
+        profileImage.src = data.image; // Gunakan existing src jika data.image tidak tersedia
       })
       .catch(error => console.error('Error:', error));
   </script>
