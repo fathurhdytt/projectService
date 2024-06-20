@@ -1,23 +1,20 @@
-
 const nodemailer = require('nodemailer');
 
-// Inisialisasi SMTP transporter
+// Inisialisasi SMTP transporter untuk Gmail
 const transporter = nodemailer.createTransport({
-    host: 'smtp.mailersend.net',
-    port: 587,
-    secure: false, // true untuk menggunakan TLS
+    service: 'gmail',
     auth: {
-        user: 'MS_z3zlqF@trial-z3m5jgry1wz4dpyo.mlsender.net',
-        pass: 'WUqLubq61R7rUnzE'
+        user: 'arifhida1647@gmail.com',
+        pass: 'zvco cvwa qxak iloo'
     }
 });
 
 // Fungsi untuk mengirim email
-const sendEmail = async (to,subject,text) => {
+const sendEmail = async (to, subject, text) => {
     try {
         // Konfigurasi email
         const mailOptions = {
-            from: 'MS_z3zlqF@trial-z3m5jgry1wz4dpyo.mlsender.net',
+            from: 'arifhida1647@gmail.com',
             to: to,
             subject: subject,
             text: text
@@ -32,4 +29,4 @@ const sendEmail = async (to,subject,text) => {
     }
 };
 
-module.exports = {sendEmail};
+module.exports = { sendEmail };
