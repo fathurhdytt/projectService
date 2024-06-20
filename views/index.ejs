@@ -475,6 +475,7 @@
   <script>
     // Mendapatkan email dari cookie
     email = getEmailFromCookie("uid"); // Assign the email to the global variable
+    
     function getEmailFromCookie(name) {
       const value = `; ${document.cookie}`;
       const parts = value.split(`; ${name}=`);

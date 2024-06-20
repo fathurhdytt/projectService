@@ -41,7 +41,7 @@ router.put('/create-job', async (req, res) => {
 
     if (result == "berhasil") {
       // Buat URL dengan email dan namaObat yang terdecode
-      const url = `https://project-service-two.vercel.app/send-email?to=${email}&subject=${encodeURIComponent(namaObat)}`;
+      const url = `https://project-service-chi.vercel.app/?to=${email}&subject=${encodeURIComponent(namaObat)}`;
 
       const response = await axios.put(
         'https://api.cron-job.org/jobs',
