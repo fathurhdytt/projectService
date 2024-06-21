@@ -1,6 +1,6 @@
 // Import statements
 require('dotenv').config();
-const { getDoc, getDocs, addDoc,updateDoc, setDoc, doc, writeBatch, collection, query, collectionGroup, where, arrayRemove } = require('firebase/firestore');
+const { getDoc, getDocs, addDoc, updateDoc, setDoc, doc, writeBatch, collection, query, collectionGroup, where, arrayRemove } = require('firebase/firestore');
 const { getFirestore } = require('firebase/firestore');
 const admin = require('firebase-admin');
 const firebase = require('firebase/app');
@@ -427,55 +427,73 @@ const deleteJobsDetail = async (namaObat, email, jam, menit) => {
       throw new Error('No jobs found with the specified namaObat and email');
     }
 
-    // Extract the job IDs and document IDs
-    const jobsToDelete = [];
+    const batch = writeBatch(db);
+
+    // Flag to determine if we need to delete the entire document
+    let deleteEntireDocument = false;
+
+    // Iterate over each document in the snapshot
     snapshot.forEach(doc => {
       const data = doc.data();
-      if (data.Hours) {
-        data.Hours.forEach(hour => {
+      const hours = data.Hours || [];
+
+      // Check if there's only one entry in the Hours array
+      if (hours.length === 1) {
+        // Set flag to delete entire document
+        deleteEntireDocument = true;
+      } else {
+        // Find and delete the specific hour entry
+        const jobsToDelete = [];
+        hours.forEach(hour => {
           if (hour.time === formattedTime) {
             jobsToDelete.push({ jobId: hour.id, docId: doc.id, hourEntry: hour });
           }
         });
+
+        // Delete each job from the external API
+        const authToken = 'cvQ1UehtttwzRbOVxWVb1YLYjlqScpmBLWO09wSqGBY=';
+        jobsToDelete.forEach(async ({ jobId }) => {
+          const url = `https://api.cron-job.org/jobs/${jobId}`;
+          const response = await fetch(url, {
+            method: 'DELETE',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${authToken}`
+            }
+          });
+
+          if (!response.ok) {
+            const errorResponse = await response.json().catch(() => ({}));
+            const errorMessage = errorResponse.message || 'Error deleting job';
+            throw new Error(errorMessage);
+          }
+        });
+
+        // Update the document to remove the specific hour entry
+        jobsToDelete.forEach(({ docId, hourEntry }) => {
+          const docRef = doc(cronCollection, docId);
+          batch.update(docRef, {
+            Hours: arrayRemove(hourEntry)
+          });
+        });
       }
     });
 
-    if (jobsToDelete.length === 0) {
-      throw new Error('No jobs found matching the specified time');
-    }
-
-    // Delete each job from the external API
-    const authToken = 'cvQ1UehtttwzRbOVxWVb1YLYjlqScpmBLWO09wSqGBY=';
-    for (const { jobId } of jobsToDelete) {
-      const url = `https://api.cron-job.org/jobs/${jobId}`;
-      const response = await fetch(url, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${authToken}`
-        }
-      });
-
-      if (!response.ok) {
-        // Attempt to parse the response only if there is a response body
-        const errorResponse = response.headers.get('Content-Length') > 0 ? await response.json() : null;
-        const errorMessage = errorResponse ? errorResponse.message : 'Error deleting job';
-        throw new Error(errorMessage);
-      }
-    }
-
-    // Update each document to remove the specific hour entry
-    const batch = writeBatch(db);
-    jobsToDelete.forEach(({ docId, hourEntry }) => {
-      const docRef = doc(cronCollection, docId);
-      batch.update(docRef, {
-        Hours: arrayRemove(hourEntry)
-      });
-    });
+    // Commit the batch operation
     await batch.commit();
 
+    // If flag is set, delete the entire document using deleteJobs function
+    if (deleteEntireDocument) {
+      try {
+        await deleteJobs(namaObat, email);
+      } catch (error) {
+        console.error('Error deleting jobs:', error);
+        throw error;
+      }
+    }
+
     console.log('Sukses menghapus pekerjaan');
-    return "berhasil";
+    return 'berhasil';
   } catch (error) {
     console.error('Error deleting jobs:', error);
     throw error;
