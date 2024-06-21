@@ -134,7 +134,7 @@ router.get('/cekEmail', async (req, res) => {
     if (result != null) {
       res.status(200).send({ message: result });
     }
-    res.status(400);
+    res.status(200);
   } catch (error) {
     res.status(400).send(error)
   }
