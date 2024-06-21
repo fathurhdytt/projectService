@@ -174,7 +174,7 @@ router.get('/delete-job', async (req, res) => {
     if (result == "berhasil") {
       res.status(200).send("berhasil");
     }
-    res.status(400);
+    res.status(200);
   } catch (error) {
     res.status(400).send(error)
   }
