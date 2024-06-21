@@ -27,7 +27,7 @@ router.get('/api/news', async (req, res) => {
 
 router.put('/create-job', async (req, res) => {
   const { namaObat, hoursTime, minutesTime, email } = req.body;
-  const token = 'cvQ1UehtttwzRbOVxWVb1YLYjlqScpmBLWO09wSqGBY='; // Token bearer
+  const token = 'OWNOzoFyX2GvLKaGBkAToOiAgM3Q+Erz8mAxnHmTA2s='; // Token bearer
 
   try {
     // Parse hoursTime and minutesTime into integers
