@@ -72,59 +72,56 @@
 
   <!-- Login Manual Logic -->
   <script>
-    const hamburger = document.querySelector("#hamburger");
-    const navMenu = document.querySelector("#nav-menu");
+    document.addEventListener('DOMContentLoaded', function () {
+      const loginForm = document.getElementById('LoginForm');
+      if (loginForm) {
+        loginForm.addEventListener('submit', async function (e) {
+          e.preventDefault();
 
-    hamburger.addEventListener("click", function () {
-      hamburger.classList.toggle("hamburger-active");
-      navMenu.classList.toggle("hidden");
-    });
+          const email = document.getElementById('email').value;
+          const password = document.getElementById('password').value;
 
-    document.getElementById('LoginForm').addEventListener('submit', async function (e) {
-      e.preventDefault();
+          try {
+            const response = await fetch('/login', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ email, password })
+            });
 
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
-
-      try {
-        const response = await fetch('/login', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ email, password })
+            if (response.ok) {
+              const data = await response.json();
+              document.cookie = `uid=${data.message}; path=/`;
+              showNotification('Login successful!', 'success');
+              window.location.href = '/';
+            } else {
+              const error = await response.json();
+              showNotification('Login Gagal: ' + 'username/password salah');
+            }
+          } catch (error) {
+            showNotification('Login Gagal: ' + error.message, 'error');
+          }
         });
+      }
 
-        if (response.ok) {
-          const data = await response.json();
-          document.cookie = `uid=${data.message}; path=/`;
-          showNotification('Login successful!', 'success');
-          window.location.href = '/';
-        } else {
-          const error = await response.json();
-          showNotification('Login Gagal: ' + 'Email/Password Salah');
-        }
-      } catch (error) {
-        showNotification('Login Gagal: ' + 'Email/Password Salah');
+      function showNotification(message, type) {
+        const container = document.getElementById('notification-container');
+        const notification = document.createElement('div');
+
+        notification.className = `px-4 py-2 rounded text-white ${type === 'success' ? 'bg-green-500' : 'bg-red-500'}`;
+        notification.innerText = message;
+
+        container.appendChild(notification);
+
+        setTimeout(() => {
+          notification.remove();
+        }, 3000); // Remove the notification after 3 seconds
       }
     });
-
-    function showNotification(message, type) {
-      const container = document.getElementById('notification-container');
-      const notification = document.createElement('div');
-
-      notification.className = `px-4 py-2 rounded text-white ${type === 'success' ? 'bg-green-500' : 'bg-red-500'}`;
-      notification.innerText = message;
-
-      container.appendChild(notification);
-
-      setTimeout(() => {
-        notification.remove();
-      }, 3000); // Remove the notification after 3 seconds
-    }
   </script>
 
-  <!-- login with google -->
+    <!-- login with google -->
   <script type="module">
     // Import the functions you need from the SDKs you need
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-app.js";
