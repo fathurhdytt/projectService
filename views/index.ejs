@@ -423,7 +423,7 @@
 
           confirmBtn.onclick = function () {
             dialog.close();
-            var url = "/delete-job?namaObat=" + encodeURIComponent(item.namaObat) + "&email=" + encodeURIComponent(email);
+            var url = "/delete-job?namaObat=" + encodeURIComponent(item.namaObat) + "&email=" + email;
             fetch(url)
               .then((response) => {
                 if (!response.ok) {

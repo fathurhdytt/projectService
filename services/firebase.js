@@ -1,6 +1,6 @@
 // Import statements
 require('dotenv').config();
-const { getDoc, getDocs, addDoc, setDoc, doc, writeBatch, collection, query, collectionGroup, where, arrayRemove } = require('firebase/firestore');
+const { getDoc, getDocs, addDoc,updateDoc, setDoc, doc, writeBatch, collection, query, collectionGroup, where, arrayRemove } = require('firebase/firestore');
 const { getFirestore } = require('firebase/firestore');
 const admin = require('firebase-admin');
 const firebase = require('firebase/app');
@@ -115,10 +115,14 @@ const updateProfileToCollection = async (uid, nama, phoneNumber, birthDate) => {
 
     // Mengambil data profil yang ada untuk mendapatkan nilai email
     const docSnap = await getDoc(docRef);
+    if (!docSnap.exists()) {
+      console.error('No such document!');
+      return 'error';
+    }
     const email = docSnap.data().email; // Mendapatkan nilai email dari data profil yang ada
 
-    // Menambahkan data profil ke dokumen, termasuk nilai email
-    await setDoc(docRef, {
+    // Memperbarui data profil di dokumen, termasuk nilai email
+    await updateDoc(docRef, {
       nama: nama,
       email: email, // Menggunakan nilai email yang ada
       phoneNumber: phoneNumber,
@@ -132,6 +136,7 @@ const updateProfileToCollection = async (uid, nama, phoneNumber, birthDate) => {
     return 'error';
   }
 };
+
 
 const getProfileById = async (docId) => {
   try {
