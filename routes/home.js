@@ -160,7 +160,7 @@ router.get('/cekCron', async (req, res) => {
     if (result != null) {
       res.status(200).send(result);
     }
-    res.status(400);
+    res.status(200);
   } catch (error) {
     res.status(400).send(error)
   }
