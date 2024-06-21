@@ -715,7 +715,7 @@
           buttonText.classList.add('hidden'); // Hide the text in the button
           spinner.classList.remove('hidden'); // Show the spinner
 
-          const emailResponse = await fetch(`/cekEmail?uid=${encodeURIComponent(uid)}`);
+          const emailResponse = await fetch(`/cekEmail?uid=${uid}`);
           const emailData = await emailResponse.json();
           if (!emailResponse.ok) {
             resultMessage.innerHTML =
@@ -725,7 +725,7 @@
 
           const email = emailData.message;
 
-          const deleteResponse = await fetch(`/delete-detail-job?email=${encodeURIComponent(email)}&namaObat=${encodeURIComponent(namaObat)}&jam=${encodeURIComponent(jam)}&menit=${encodeURIComponent(menit)}`);
+          const deleteResponse = await fetch(`/delete-detail-job?email=${email}&namaObat=${encodeURIComponent(namaObat)}&jam=${encodeURIComponent(jam)}&menit=${encodeURIComponent(menit)}`);
 
           if (deleteResponse.ok) {
             const responseData = await deleteResponse.text();
