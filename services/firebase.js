@@ -427,32 +427,27 @@ const deleteJobsDetail = async (namaObat, email, jam, menit) => {
       throw new Error('No jobs found with the specified namaObat and email');
     }
 
-    const batch = writeBatch(db);
-
-    // Flag to determine if we need to delete the entire document
-    let deleteEntireDocument = false;
-
     // Iterate over each document in the snapshot
-    snapshot.forEach(doc => {
-      const data = doc.data();
+    for (const snap of snapshot.docs) {
+      const data = snap.data();
       const hours = data.Hours || [];
 
       // Check if there's only one entry in the Hours array
       if (hours.length === 1) {
-        // Set flag to delete entire document
-        deleteEntireDocument = true;
+        // If only one entry, delete the entire document
+        await deleteJobs(namaObat, email); // Assuming deleteJobs function handles this case
       } else {
         // Find and delete the specific hour entry
         const jobsToDelete = [];
         hours.forEach(hour => {
           if (hour.time === formattedTime) {
-            jobsToDelete.push({ jobId: hour.id, docId: doc.id, hourEntry: hour });
+            jobsToDelete.push({ jobId: hour.id, docId: snap.id, hourEntry: hour });
           }
         });
 
         // Delete each job from the external API
         const authToken = 'cvQ1UehtttwzRbOVxWVb1YLYjlqScpmBLWO09wSqGBY=';
-        jobsToDelete.forEach(async ({ jobId }) => {
+        for (const { jobId } of jobsToDelete) {
           const url = `https://api.cron-job.org/jobs/${jobId}`;
           const response = await fetch(url, {
             method: 'DELETE',
@@ -467,8 +462,11 @@ const deleteJobsDetail = async (namaObat, email, jam, menit) => {
             const errorMessage = errorResponse.message || 'Error deleting job';
             throw new Error(errorMessage);
           }
-        });
+        }
 
+        // Create a new batch for updating Firestore documents
+        const batch = writeBatch(db);
+        
         // Update the document to remove the specific hour entry
         jobsToDelete.forEach(({ docId, hourEntry }) => {
           const docRef = doc(cronCollection, docId);
@@ -476,19 +474,9 @@ const deleteJobsDetail = async (namaObat, email, jam, menit) => {
             Hours: arrayRemove(hourEntry)
           });
         });
-      }
-    });
 
-    // Commit the batch operation
-    await batch.commit();
-
-    // If flag is set, delete the entire document using deleteJobs function
-    if (deleteEntireDocument) {
-      try {
-        await deleteJobs(namaObat, email);
-      } catch (error) {
-        console.error('Error deleting jobs:', error);
-        throw error;
+        // Commit the batch operation
+        await batch.commit();
       }
     }
 

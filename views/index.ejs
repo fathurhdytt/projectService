@@ -725,7 +725,7 @@
 
           const email = emailData.message;
 
-          const deleteResponse = await fetch(`/delete-detail-job?email=${email}&namaObat=${(namaObat)}&jam=${(jam)}&menit=${(menit)}`);
+          const deleteResponse = await fetch(`/delete-detail-job?email=${email}&namaObat=${encodeURIComponent(namaObat)}&jam=${encodeURIComponent(jam)}&menit=${encodeURIComponent(menit)}`);
 
           if (deleteResponse.ok) {
             const responseData = await deleteResponse.text();
