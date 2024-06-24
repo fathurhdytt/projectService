@@ -91,7 +91,11 @@ const addProfileToCollection = async (uid, nama, email) => {
   try {
     // Referensi ke dokumen di koleksi 'profiles' dengan UID sebagai ID dokumen
     const docRef = doc(db, 'profiles', uid);
-
+    // Mengambil data profil yang ada untuk mendapatkan nilai email
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      return 'berhasil';
+    }
     // Menambahkan data profil ke dokumen
     await setDoc(docRef, {
       nama: nama,
