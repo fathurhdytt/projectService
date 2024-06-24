@@ -180,7 +180,6 @@ router.get('/delete-job', async (req, res) => {
   }
 })
 
-
 router.get('/forgetPassword', async (req, res) => {
   const email = req.query.email;
   try {

@@ -427,7 +427,27 @@ const deleteJobsDetail = async (namaObat, email, jam, menit) => {
       throw new Error('No jobs found with the specified namaObat and email');
     }
 
+    let timeExists = false;
+
     // Iterate over each document in the snapshot
+    for (const snap of snapshot.docs) {
+      const data = snap.data();
+      const hours = data.Hours || [];
+
+      // Check if the specified time exists in any of the hours
+      for (const hour of hours) {
+        if (hour.time === formattedTime) {
+          timeExists = true;
+          break;
+        }
+      }
+
+      if (!timeExists) {
+        throw new Error(`No jobs found with the specified time ${formattedTime}`);
+      }
+    }
+
+    // Proceed with deletion if the time exists
     for (const snap of snapshot.docs) {
       const data = snap.data();
       const hours = data.Hours || [];
@@ -466,7 +486,7 @@ const deleteJobsDetail = async (namaObat, email, jam, menit) => {
 
         // Create a new batch for updating Firestore documents
         const batch = writeBatch(db);
-        
+
         // Update the document to remove the specific hour entry
         jobsToDelete.forEach(({ docId, hourEntry }) => {
           const docRef = doc(cronCollection, docId);
